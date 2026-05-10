@@ -9,13 +9,22 @@
 </head>
 <body>
 
-    <div class="bg-overlay"></div>
+    <div id="glow-bg" class="bg-overlay"></div>
 
     <div class="container">
         <div id="player" style="position: absolute; top: -2000px; left: -2000px; width: 200px; height: 200px;"></div>
 
         <button id="music-btn" class="music-btn">
-            <span class="icon">▶</span> <span class="btn-text">PLAY PHONK</span>
+            <span class="btn-content">
+                <span class="icon">▶</span> 
+                <span class="btn-text">PLAY PHONK</span>
+            </span>
+            <div class="equalizer" id="equalizer">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
         </button>
 
         <div class="countdown-section">
