@@ -1,28 +1,47 @@
-// --- LECTEUR AUDIO PHONK ---
-const music = document.getElementById('bg-music');
+// --- CONFIGURATION LECTEUR YOUTUBE INVISIBLE ---
+let player;
 const musicBtn = document.getElementById('music-btn');
 const btnIcon = musicBtn.querySelector('.icon');
 const btnText = musicBtn.querySelector('.btn-text');
+let isPlaying = false;
 
-// Force le chargement de l'audio dès le départ
-music.load();
+// Cette fonction est appelée automatiquement par l'API YouTube
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'tAcnQYvPl1s', // L'ID de ta vidéo "MONTAGEM ELDER"
+        playerVars: {
+            'autoplay': 0,
+            'controls': 0,
+            'loop': 1,
+            'playlist': 'tAcnQYvPl1s' // Obligatoire pour faire tourner en boucle
+        },
+        events: {
+            'onReady': onPlayerReady
+        }
+    });
+}
+
+function onPlayerReady(event) {
+    // Le lecteur est prêt, on active le bouton
+    musicBtn.style.opacity = "1";
+    musicBtn.style.pointerEvents = "auto";
+}
 
 musicBtn.addEventListener('click', () => {
-    if (music.paused) {
-        // Option de secours au cas où le navigateur bloque
-        music.play()
-            .then(() => {
-                btnIcon.innerText = "⏸";
-                btnText.innerText = "PAUSE PHONK";
-            })
-            .catch(err => {
-                console.log("Erreur de lecture : ", err);
-                alert("Cliquez une deuxième fois pour forcer la lecture !");
-            });
+    if (!player) return;
+
+    if (!isPlaying) {
+        player.playVideo();
+        btnIcon.innerText = "⏸";
+        btnText.innerText = "PAUSE PHONK";
+        isPlaying = true;
     } else {
-        music.pause();
+        player.pauseVideo();
         btnIcon.innerText = "▶";
         btnText.innerText = "PLAY PHONK";
+        isPlaying = false;
     }
 });
 
