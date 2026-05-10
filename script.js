@@ -1,17 +1,24 @@
-// --- LECTEUR AUDIO ---
+// --- LECTEUR AUDIO PHONK ---
 const music = document.getElementById('bg-music');
 const musicBtn = document.getElementById('music-btn');
 const btnIcon = musicBtn.querySelector('.icon');
 const btnText = musicBtn.querySelector('.btn-text');
 
+// Force le chargement de l'audio dès le départ
+music.load();
+
 musicBtn.addEventListener('click', () => {
     if (music.paused) {
-        music.play().then(() => {
-            btnIcon.innerText = "⏸";
-            btnText.innerText = "PAUSE PHONK";
-        }).catch(err => {
-            console.log("Lecture bloquée. L'utilisateur doit interagir avec la page d'abord.", err);
-        });
+        // Option de secours au cas où le navigateur bloque
+        music.play()
+            .then(() => {
+                btnIcon.innerText = "⏸";
+                btnText.innerText = "PAUSE PHONK";
+            })
+            .catch(err => {
+                console.log("Erreur de lecture : ", err);
+                alert("Cliquez une deuxième fois pour forcer la lecture !");
+            });
     } else {
         music.pause();
         btnIcon.innerText = "▶";
@@ -20,7 +27,6 @@ musicBtn.addEventListener('click', () => {
 });
 
 // --- TIMER DE 24 JOURS ---
-// On stocke la date de fin dans le navigateur du visiteur pour éviter que le chrono se réinitialise à chaque actualisation.
 let targetDate = localStorage.getItem('countdownTarget');
 
 if (!targetDate) {
