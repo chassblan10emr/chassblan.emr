@@ -3,6 +3,8 @@ let player;
 const musicBtn = document.getElementById('music-btn');
 const btnIcon = musicBtn.querySelector('.icon');
 const btnText = musicBtn.querySelector('.btn-text');
+const equalizer = document.getElementById('equalizer');
+const glowBg = document.getElementById('glow-bg');
 let isPlaying = false;
 
 // Appelé automatiquement par l'API YouTube
@@ -26,7 +28,7 @@ function onYouTubeIframeAPIReady() {
 
 musicBtn.addEventListener('click', () => {
     if (!player || typeof player.playVideo !== 'function') {
-        alert("Chargement de la musique en cours... Réessayez dans 2 secondes.");
+        alert("Chargement du Phonk en cours... Réessayez dans 2 secondes.");
         return;
     }
 
@@ -34,11 +36,21 @@ musicBtn.addEventListener('click', () => {
         player.playVideo();
         btnIcon.innerText = "⏸";
         btnText.innerText = "PAUSE PHONK";
+        
+        // Active les animations visuelles !
+        equalizer.classList.add('active');
+        glowBg.classList.add('bass-active');
+        
         isPlaying = true;
     } else {
         player.pauseVideo();
         btnIcon.innerText = "▶";
         btnText.innerText = "PLAY PHONK";
+        
+        // Désactive les animations visuelles
+        equalizer.classList.remove('active');
+        glowBg.classList.remove('bass-active');
+        
         isPlaying = false;
     }
 });
