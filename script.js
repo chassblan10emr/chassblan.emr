@@ -1,36 +1,34 @@
-// --- CONFIGURATION LECTEUR YOUTUBE INVISIBLE ---
+// --- CONFIGURATION LECTEUR YOUTUBE HORS-ÉCRAN ---
 let player;
 const musicBtn = document.getElementById('music-btn');
 const btnIcon = musicBtn.querySelector('.icon');
 const btnText = musicBtn.querySelector('.btn-text');
 let isPlaying = false;
 
-// Cette fonction est appelée automatiquement par l'API YouTube
+// Appelé automatiquement par l'API YouTube
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
-        height: '0',
-        width: '0',
-        videoId: 'tAcnQYvPl1s', // L'ID de ta vidéo "MONTAGEM ELDER"
+        height: '200',
+        width: '200',
+        videoId: 'tAcnQYvPl1s', // "MONTAGEM ELDER"
         playerVars: {
             'autoplay': 0,
             'controls': 0,
+            'disablekb': 1,
+            'fs': 0,
+            'rel': 0,
+            'modestbranding': 1,
             'loop': 1,
-            'playlist': 'tAcnQYvPl1s' // Obligatoire pour faire tourner en boucle
-        },
-        events: {
-            'onReady': onPlayerReady
+            'playlist': 'tAcnQYvPl1s' 
         }
     });
 }
 
-function onPlayerReady(event) {
-    // Le lecteur est prêt, on active le bouton
-    musicBtn.style.opacity = "1";
-    musicBtn.style.pointerEvents = "auto";
-}
-
 musicBtn.addEventListener('click', () => {
-    if (!player) return;
+    if (!player || typeof player.playVideo !== 'function') {
+        alert("Chargement de la musique en cours... Réessayez dans 2 secondes.");
+        return;
+    }
 
     if (!isPlaying) {
         player.playVideo();
