@@ -71,7 +71,7 @@
             bottom: 30px;
             left: 30px;
             display: flex;
-            flex-direction: column; /* Changé pour empiler le panel au-dessus de l'orbe */
+            flex-direction: column;
             align-items: flex-start;
             gap: 20px;
             z-index: 10;
@@ -85,7 +85,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer; /* Indique que c'est cliquable */
+            cursor: pointer;
         }
 
         .jarvis-orb {
@@ -105,7 +105,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Effet au survol du bouton JARVIS */
         .jarvis-orb-container:hover .jarvis-orb {
             transform: scale(1.05);
             box-shadow: 0 0 45px rgba(0, 240, 255, 0.9);
@@ -116,7 +115,7 @@
             position: absolute;
             border-radius: 50%;
             border: 1px dashed rgba(0, 240, 255, 0.6);
-            pointer-events: none; /* Évite de bloquer le clic */
+            pointer-events: none;
         }
 
         .jarvis-ring-1 {
@@ -134,7 +133,6 @@
             animation: spin-reverse 6s linear infinite;
         }
 
-        /* Animation quand JARVIS est activé (Scan rapide) */
         .jarvis-orb.active {
             animation: active-pulse 0.5s infinite alternate !important;
             border-color: #ff007f;
@@ -144,9 +142,9 @@
             text-shadow: 0 0 8px #ff007f;
         }
 
-        /* Panneau de données Stark (S'ouvre au-dessus de l'orbe) */
+        /* Panneau de données Stark */
         .jarvis-data {
-            display: none; /* Masqué par défaut */
+            display: none;
             flex-direction: column;
             gap: 15px;
             background: rgba(10, 14, 23, 0.9);
@@ -179,7 +177,7 @@
         }
 
         /*=========================================
-          WIDGET DE CHAT (EN BAS À DROITE)
+          CONSOLE DE CHAT JARVIS (EN BAS À DROITE)
           =========================================*/
         #ai-widget-btn {
             position: fixed;
@@ -214,7 +212,6 @@
             box-shadow: 0 0 35px rgba(0, 240, 255, 0.9);
         }
 
-        /* CONSOLE DE CHAT STARK */
         #chat-container {
             position: fixed;
             bottom: 120px;
@@ -233,7 +230,6 @@
             transition: all 0.3s ease-in-out;
         }
 
-        /* EN-TETE DE LA CONSOLE */
         .chat-header {
             background: rgba(0, 240, 255, 0.1);
             padding: 15px;
@@ -261,7 +257,6 @@
             box-shadow: 0 0 8px #39ff14;
         }
 
-        /* ZONE DES MESSAGES */
         .chat-messages {
             flex: 1;
             padding: 15px;
@@ -272,7 +267,6 @@
             font-size: 13px;
         }
 
-        /* STYLE DES MESSAGES */
         .message {
             max-width: 80%;
             padding: 10px 14px;
@@ -296,7 +290,6 @@
             text-shadow: 0 0 5px rgba(255, 0, 127, 0.3);
         }
 
-        /* ZONE D'ENTREE TEXTE */
         .chat-input-area {
             border-top: 1px solid #00f0ff;
             padding: 10px;
@@ -339,12 +332,8 @@
         }
 
         /* ANIMATIONS GLOBAUX */
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes spin-reverse {
-            100% { transform: rotate(-360deg); }
-        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.9; }
             100% { transform: scale(1.03); opacity: 1; box-shadow: 0 0 30px rgba(0, 240, 255, 0.8); }
@@ -358,13 +347,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* SCROLLBAR CUSTOM */
-        .chat-messages::-webkit-scrollbar {
-            width: 4px;
-        }
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: #00f0ff;
-        }
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: #00f0ff; }
     </style>
 </head>
 <body>
@@ -376,159 +360,3 @@
             <p>F.R.I.D.A.Y. STANDING BY.<br>JARVIS MODULES DEPLOYED.</p>
         </div>
     </div>
-
-    <div class="jarvis-interface">
-        <div class="jarvis-data" id="jarvis-data-panel">
-            <div class="data-block">
-                <h4>GAMING STATUS</h4>
-                <p>FORTNITE: ACTIVE</p>
-                <p>GTA V: ONLINE</p>
-                <p>MW3: ONLINE</p>
-            </div>
-            <div class="data-block">
-                <h4>DEV TERMINAL</h4>
-                <p>CODE: VS CODE ACTIVE</p>
-                <p>DESIGN: PHOTOSHOP ACTIVE</p>
-                <p>SYSTEM: OPTIMIZED</p>
-            </div>
-            <div class="data-block">
-                <h4>LIFE HUB</h4>
-                <p>BAC PREP: 100% RUNNING</p>
-                <p>LOCATION: BOUZNIKA, MA</p>
-            </div>
-            <div class="data-block">
-                <h4>TARGET</h4>
-                <p>NEXT GOAL: BMW M3 CS CONCEPT</p>
-            </div>
-        </div>
-
-        <div class="jarvis-orb-container" id="jarvis-toggle-btn">
-            <div class="jarvis-ring-1"></div>
-            <div class="jarvis-ring-2"></div>
-            <div class="jarvis-orb" id="jarvis-orb-element">JARVIS</div>
-        </div>
-    </div>
-
-    <div id="ai-widget-btn">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" stroke="#00f0ff" stroke-width="2"/>
-            <circle cx="12" cy="12" r="5" fill="#00f0ff"/>
-        </svg>
-    </div>
-
-    <div id="chat-container">
-        <div class="chat-header">
-            <div>
-                <span class="status-dot"></span>
-                <h3>E.D.I.T.H. // PROTOTYPE</h3>
-            </div>
-            <span style="cursor:pointer; font-size: 18px;" id="close-chat">&times;</span>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <div class="message bot">
-                [SYSTEM]: Connexion sécurisée établie.<br>
-                Salut ! Ici E.D.I.T.H., l'assistant virtuel d'Adnane. Il est sûrement en train de coder, de bosser son bac ou de tester un nouveau setup, mais je peux répondre à sa place. Tu veux savoir quoi ?
-            </div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="chat-input" placeholder="Poser une question..." autocomplete="off">
-            <button id="send-btn">SEND</button>
-        </div>
-    </div>
-
-    <script>
-        // JS POUR LE BOUTON JARVIS (A GAUCHE)
-        const jarvisToggleBtn = document.getElementById('jarvis-toggle-btn');
-        const jarvisDataPanel = document.getElementById('jarvis-data-panel');
-        const jarvisOrbElement = document.getElementById('jarvis-orb-element');
-
-        jarvisToggleBtn.addEventListener('click', () => {
-            // Vérifier si le panel est affiché
-            if (jarvisDataPanel.style.display === 'flex') {
-                jarvisDataPanel.style.display = 'none';
-                jarvisOrbElement.classList.remove('active'); // Retire la couleur rouge active
-            } else {
-                jarvisDataPanel.style.display = 'flex';
-                jarvisOrbElement.classList.add('active'); // Active l'effet rouge néon ultra-stylé
-            }
-        });
-
-
-        // JS POUR LE CHAT DE DROITE (E.D.I.T.H.)
-        const widgetBtn = document.getElementById('ai-widget-btn');
-        const chatContainer = document.getElementById('chat-container');
-        const closeChat = document.getElementById('close-chat');
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const chatMessages = document.getElementById('chat-messages');
-
-        // Toggle ouvrir/fermer le chat
-        widgetBtn.addEventListener('click', () => {
-            chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
-        });
-
-        closeChat.addEventListener('click', () => {
-            chatContainer.style.display = 'none';
-        });
-
-        // Gestion des messages
-        function sendMessage() {
-            const query = chatInput.value.trim().toLowerCase();
-            if (query === "") return;
-
-            // Ajouter le message de l'utilisateur
-            appendMessage(chatInput.value, 'user');
-            chatInput.value = "";
-
-            // Simulation du temps de réponse d'E.D.I.T.H.
-            setTimeout(() => {
-                const response = getBotResponse(query);
-                appendMessage(response, 'bot');
-            }, 800);
-        }
-
-        sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-
-        function appendMessage(text, sender) {
-            const msgDiv = document.createElement('div');
-            msgDiv.classList.add('message', sender);
-            msgDiv.innerHTML = text;
-            chatMessages.appendChild(msgDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // BASE DE CONNAISSANCES DE L'IA (Sans marque, focus sur toi)
-        function getBotResponse(input) {
-            if (input.includes('qui es-tu') || input.includes('t\'es qui') || input.includes('presentation')) {
-                return "[E.D.I.T.H.]: Je suis une IA de protocole de sécurité de niveau 4, conçue pour représenter Adnane El Amraoui quand il n'est pas dispo. Je gère son réseau, ses projets et je m'assure que personne ne touche à son code.";
-            }
-            if (input.includes('qui est adnane') || input.includes('adnane')) {
-                return "[E.D.I.T.H.]: Adnane ? C'est le créateur de ce site. Designer de marque, créateur de contenu, passionné d'IA, de cybersécurité et de tech style Stark. Ah, et grand fan du Real Madrid (Hala Madrid !).";
-            }
-            if (input.includes('voiture') || input.includes('m3') || input.includes('ford')) {
-                return "[E.D.I.T.H.]: Sa voiture de rêve ? BMW M3 CS ou une Ford Fusion Titanium bien modifiée et agressive en noir mat. Classe et puissant, style Stark.";
-            }
-            if (input.includes('setup') || input.includes('pc') || input.includes('telephone')) {
-                return "[E.D.I.T.H.]: Système 100% connecté. Team Samsung pour l'écosystème ouvert et Google Home pour automatiser sa chambre comme l'atelier de Tony Stark. Pas de place pour la pomme fermée ici.";
-            }
-            if (input.includes('fortnite') || input.includes('jeu') || input.includes('gaming') || input.includes('gta')) {
-                return "[E.D.I.T.H.]: Quand il n'est pas sur Photoshop ou VS Code, tu peux le trouver sur Fortnite (gros niveau de piece control, respecte stp), sur GTA Online avec un skin style Iron Man, ou sur Call of Duty.";
-            }
-            if (input.includes('insta') || input.includes('contact') || input.includes('instagram') || input.includes('reseau')) {
-                return "[E.D.I.T.H.]: Tu peux le ping sur son Instagram officiel : **@chassblan.mr**. Envoie un DM, il répond vite !";
-            }
-
-            const defaultAnswers = [
-                "[E.D.I.T.H.]: Requête reçue, mais l'accès à cette base de données nécessite une autorisation de Tony Stark. Pose-moi une autre question !",
-                "[E.D.I.T.H.]: Analyse en cours... Je ne trouve pas la réponse exacte dans mes serveurs, mais essaye de me parler de ses projets, de gaming, ou de ses voitures préférées.",
-                "[E.D.I.T.H.]: *Bip boop* Désolée, je recalibre mes capteurs. Repose ta question d'une autre manière !",
-                "[E.D.I.T.H.]: Adnane m'a dit de ne pas divulguer d'informations top-secrètes sans l'authentification de son compte principal."
-            ];
-            return defaultAnswers[Math.floor(Math.random() * defaultAnswers.length)];
-        }
-    </script>
-</body>
-</html>
