@@ -3,46 +3,311 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chassblan | Official</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <title>Mon Site Perso</title>
+    <style>
+        /* BASE & THEME STARK */
+        body {
+            background-color: #0a0e17;
+            font-family: 'Courier New', Courier, monospace;
+            color: #00f0ff;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* BOUTON FLOTTANT (L'ORBE DE L'IA) */
+        #ai-widget-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, #00f0ff 0%, #005f73 70%, #0a0e17 100%);
+            border: 2px solid #00f0ff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+
+        #ai-widget-btn::before {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 1px dashed #00f0ff;
+            border-radius: 50%;
+            animation: spin 8s linear infinite;
+        }
+
+        #ai-widget-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.9);
+        }
+
+        /* CONSOLE DE CHAT STARK */
+        #chat-container {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 380px;
+            height: 500px;
+            background: rgba(10, 14, 23, 0.95);
+            border: 1px solid #00f0ff;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+            display: none; /* Masqué par défaut */
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9998;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* EN-TETE DE LA CONSOLE */
+        .chat-header {
+            background: rgba(0, 240, 255, 0.1);
+            padding: 15px;
+            border-bottom: 1px solid #00f0ff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px #00f0ff;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #39ff14;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 8px #39ff14;
+        }
+
+        /* ZONE DES MESSAGES */
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 13px;
+        }
+
+        /* MESSAGE STYLE */
+        .message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            line-height: 1.4;
+        }
+
+        .message.bot {
+            background: rgba(0, 240, 255, 0.05);
+            border-left: 3px solid #00f0ff;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        .message.user {
+            background: rgba(255, 0, 127, 0.1);
+            border-right: 3px solid #ff007f;
+            color: #ff007f;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+            text-shadow: 0 0 5px rgba(255, 0, 127, 0.3);
+        }
+
+        /* ZONE D'ENTREE TEXTE */
+        .chat-input-area {
+            border-top: 1px solid #00f0ff;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            background: transparent;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 4px;
+            padding: 10px;
+            color: #00f0ff;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .chat-input-area input:focus {
+            border-color: #00f0ff;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+
+        .chat-input-area button {
+            background: #00f0ff;
+            color: #0a0e17;
+            border: none;
+            padding: 0 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .chat-input-area button:hover {
+            background: #fff;
+            box-shadow: 0 0 12px #00f0ff;
+        }
+
+        /* ANIMATION ROTATION */
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* SCROLLBAR CUSTOM */
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #00f0ff;
+        }
+    </style>
 </head>
 <body>
 
-    <div id="glow-bg" class="bg-overlay"></div>
+    <div id="ai-widget-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="#00f0ff" stroke-width="2"/>
+            <circle cx="12" cy="12" r="5" fill="#00f0ff"/>
+        </svg>
+    </div>
 
-    <div class="container">
-        <div id="player" style="position: absolute; top: -2000px; left: -2000px; width: 200px; height: 200px;"></div>
-
-        <button id="music-btn" class="music-btn">
-            <span class="btn-content">
-                <span class="icon">▶</span> 
-                <span class="btn-text">PLAY PHONK</span>
-            </span>
-            <div class="equalizer" id="equalizer">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+    <div id="chat-container">
+        <div class="chat-header">
+            <div>
+                <span class="status-dot"></span>
+                <h3>E.D.I.T.H. // PROTOTYPE</h3>
             </div>
-        </button>
-
-        <div class="countdown-section">
-            <h2 class="section-title">NEXT DROP IN</h2>
-            <div id="countdown" class="timer">24d 00h 00m 00s</div>
+            <span style="cursor:pointer; font-size: 18px;" id="close-chat">&times;</span>
         </div>
-
-        <div class="links-section">
-            <a href="https://instagram.com/chassblan.emr" target="_blank" class="link-card insta">
-                INSTAGRAM
-            </a>
-            <a href="https://discord.gg/EVJF2rrGhU" target="_blank" class="link-card discord">
-                DISCORD
-            </a>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot">
+                [SYSTEM]: Connexion sécurisée établie.<br>
+                Salut ! Ici E.D.I.T.H., l'assistant virtuel d'Adnane. Il est sûrement en train de coder, de bosser son bac ou de tester un nouveau setup, mais je peux répondre à sa place. Tu veux savoir quoi ?
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Poser une question..." autocomplete="off">
+            <button id="send-btn">SEND</button>
         </div>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="script.js"></script>
+    <script>
+        const widgetBtn = document.getElementById('ai-widget-btn');
+        const chatContainer = document.getElementById('chat-container');
+        const closeChat = document.getElementById('close-chat');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // Toggle ouvrir/fermer le chat
+        widgetBtn.addEventListener('click', () => {
+            chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        closeChat.addEventListener('click', () => {
+            chatContainer.style.display = 'none';
+        });
+
+        // Gestion des messages
+        function sendMessage() {
+            const query = chatInput.value.trim().toLowerCase();
+            if (query === "") return;
+
+            // Ajouter le message de l'utilisateur
+            appendMessage(chatInput.value, 'user');
+            chatInput.value = "";
+
+            // Simulation du temps de réponse d'E.D.I.T.H.
+            setTimeout(() => {
+                const response = getBotResponse(query);
+                appendMessage(response, 'bot');
+            }, 800);
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        function appendMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message', sender);
+            msgDiv.innerHTML = text;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // BASE DE CONNAISSANCES DE L'IA (Ton style Stark & personnalisé)
+        function getBotResponse(input) {
+            // Qui es-tu / qui est adnane
+            if (input.includes('qui es-tu') || input.includes('t\'es qui') || input.includes('presentation')) {
+                return "[E.D.I.T.H.]: Je suis une IA de protocole de sécurité de niveau 4, conçue pour représenter Adnane El Amraoui quand il n'est pas dispo. Je gère son réseau, ses projets et je m'assure que personne ne touche à son code.";
+            }
+            if (input.includes('qui est adnane') || input.includes('adnane')) {
+                return "[E.D.I.T.H.]: Adnane ? C'est le créateur de ce site. Designer de marque, créateur de contenu, passionné d'IA, de cybersécurité et de tech style Stark. Ah, et grand fan du Real Madrid (Hala Madrid !).";
+            }
+
+            // Projets / Lumina
+            if (input.includes('lumina') || input.includes('marque') || input.includes('vetement') || input.includes('streetwear')) {
+                return "[E.D.I.T.H.]: LUMINA. C'est son projet de marque streetwear ultra-visuelle. Le drop arrive très bientôt, reste branché sur son Instagram.";
+            }
+
+            // Tech / Musique / Car
+            if (input.includes('musique') || input.includes('phonk') || input.includes('son')) {
+                return "[E.D.I.T.H.]: Niveau son, c'est Brazilian Funk ou Phonk en boucle, 24/7. De préférence des versions slowed & reverb pour bosser sur ses designs.";
+            }
+            if (input.includes('voiture') || input.includes('m3') || input.includes('ford')) {
+                return "[E.D.I.T.H.]: Sa voiture de rêve ? BMW M3 CS ou une Ford Fusion Titanium bien modifiée et agressive en noir mat. Classe et puissant, style Stark.";
+            }
+            if (input.includes('setup') || input.includes('pc') || input.includes('telephone')) {
+                return "[E.D.I.T.H.]: Système 100% connecté. Team Samsung pour l'écosystème ouvert et Google Home pour automatiser sa chambre comme l'atelier de Tony Stark. Pas de place pour la pomme fermée ici.";
+            }
+
+            // Gaming
+            if (input.includes('fortnite') || input.includes('jeu') || input.includes('gaming') || input.includes('gta')) {
+                return "[E.D.I.T.H.]: Quand il n'est pas sur Photoshop ou VS Code, tu peux le trouver sur Fortnite (gros niveau de piece control, respecte stp), sur GTA Online avec un skin style Iron Man, ou sur Call of Duty.";
+            }
+
+            // Contact / Insta
+            if (input.includes('insta') || input.includes('contact') || input.includes('instagram') || input.includes('reseau')) {
+                return "[E.D.I.T.H.]: Tu peux le ping sur son Instagram officiel : **@chassblan.mr**. Envoie un DM, il répond vite (sauf s'il est en plein rush d'idées).";
+            }
+
+            // Réponses par défaut fun (Vibe Stark)
+            const defaultAnswers = [
+                "[E.D.I.T.H.]: Requête reçue, mais l'accès à cette base de données nécessite une autorisation de Tony Stark. Pose-moi une autre question !",
+                "[E.D.I.T.H.]: Analyse en cours... Je ne trouve pas la réponse exacte dans mes serveurs, mais essaye de me parler de ses designs, de sa marque **LUMINA**, de gaming ou de ses sons préférés.",
+                "[E.D.I.T.H.]: *Bip boop* Désolée, je recalibre mes capteurs. Repose ta question d'une autre manière !",
+                "[E.D.I.T.H.]: Adnane m'a dit de ne pas divulguer d'informations top-secrètes sans l'authentification de son compte principal."
+            ];
+            return defaultAnswers[Math.floor(Math.random() * defaultAnswers.length)];
+        }
+    </script>
 </body>
 </html>
