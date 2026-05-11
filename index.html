@@ -71,12 +71,13 @@
             bottom: 30px;
             left: 30px;
             display: flex;
-            align-items: flex-end;
-            gap: 25px;
+            flex-direction: column; /* Changé pour empiler le panel au-dessus de l'orbe */
+            align-items: flex-start;
+            gap: 20px;
             z-index: 10;
         }
 
-        /* Orbe JARVIS */
+        /* Orbe JARVIS (Bouton d'activation) */
         .jarvis-orb-container {
             position: relative;
             width: 140px;
@@ -84,6 +85,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer; /* Indique que c'est cliquable */
         }
 
         .jarvis-orb {
@@ -100,13 +102,21 @@
             font-weight: bold;
             letter-spacing: 1px;
             text-shadow: 0 0 5px #fff;
-            animation: pulse 2s infinite alternate;
+            transition: all 0.3s ease;
+        }
+
+        /* Effet au survol du bouton JARVIS */
+        .jarvis-orb-container:hover .jarvis-orb {
+            transform: scale(1.05);
+            box-shadow: 0 0 45px rgba(0, 240, 255, 0.9);
+            text-shadow: 0 0 10px #fff;
         }
 
         .jarvis-ring-1, .jarvis-ring-2 {
             position: absolute;
             border-radius: 50%;
             border: 1px dashed rgba(0, 240, 255, 0.6);
+            pointer-events: none; /* Évite de bloquer le clic */
         }
 
         .jarvis-ring-1 {
@@ -124,14 +134,29 @@
             animation: spin-reverse 6s linear infinite;
         }
 
-        /* Infos Stark à côté de l'orbe */
+        /* Animation quand JARVIS est activé (Scan rapide) */
+        .jarvis-orb.active {
+            animation: active-pulse 0.5s infinite alternate !important;
+            border-color: #ff007f;
+            background: radial-gradient(circle, rgba(255,0,127,0.8) 0%, rgba(120,0,60,0.8) 70%, transparent 100%);
+            box-shadow: 0 0 40px rgba(255, 0, 127, 0.8);
+            color: #fff;
+            text-shadow: 0 0 8px #ff007f;
+        }
+
+        /* Panneau de données Stark (S'ouvre au-dessus de l'orbe) */
         .jarvis-data {
-            display: flex;
+            display: none; /* Masqué par défaut */
             flex-direction: column;
             gap: 15px;
-            border-left: 1px solid rgba(0, 240, 255, 0.3);
-            padding-left: 20px;
-            margin-bottom: 10px;
+            background: rgba(10, 14, 23, 0.9);
+            border: 1px solid #00f0ff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
+            backdrop-filter: blur(5px);
+            width: 220px;
+            animation: slideUp 0.3s ease-out;
         }
 
         .data-block {
@@ -324,6 +349,14 @@
             0% { transform: scale(1); opacity: 0.9; }
             100% { transform: scale(1.03); opacity: 1; box-shadow: 0 0 30px rgba(0, 240, 255, 0.8); }
         }
+        @keyframes active-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 0, 127, 0.6); }
+            100% { transform: scale(1.08); box-shadow: 0 0 45px rgba(255, 0, 127, 1); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         /* SCROLLBAR CUSTOM */
         .chat-messages::-webkit-scrollbar {
@@ -345,12 +378,7 @@
     </div>
 
     <div class="jarvis-interface">
-        <div class="jarvis-orb-container">
-            <div class="jarvis-ring-1"></div>
-            <div class="jarvis-ring-2"></div>
-            <div class="jarvis-orb">JARVIS</div>
-        </div>
-        <div class="jarvis-data">
+        <div class="jarvis-data" id="jarvis-data-panel">
             <div class="data-block">
                 <h4>GAMING STATUS</h4>
                 <p>FORTNITE: ACTIVE</p>
@@ -372,6 +400,12 @@
                 <h4>TARGET</h4>
                 <p>NEXT GOAL: BMW M3 CS CONCEPT</p>
             </div>
+        </div>
+
+        <div class="jarvis-orb-container" id="jarvis-toggle-btn">
+            <div class="jarvis-ring-1"></div>
+            <div class="jarvis-ring-2"></div>
+            <div class="jarvis-orb" id="jarvis-orb-element">JARVIS</div>
         </div>
     </div>
 
@@ -403,6 +437,24 @@
     </div>
 
     <script>
+        // JS POUR LE BOUTON JARVIS (A GAUCHE)
+        const jarvisToggleBtn = document.getElementById('jarvis-toggle-btn');
+        const jarvisDataPanel = document.getElementById('jarvis-data-panel');
+        const jarvisOrbElement = document.getElementById('jarvis-orb-element');
+
+        jarvisToggleBtn.addEventListener('click', () => {
+            // Vérifier si le panel est affiché
+            if (jarvisDataPanel.style.display === 'flex') {
+                jarvisDataPanel.style.display = 'none';
+                jarvisOrbElement.classList.remove('active'); // Retire la couleur rouge active
+            } else {
+                jarvisDataPanel.style.display = 'flex';
+                jarvisOrbElement.classList.add('active'); // Active l'effet rouge néon ultra-stylé
+            }
+        });
+
+
+        // JS POUR LE CHAT DE DROITE (E.D.I.T.H.)
         const widgetBtn = document.getElementById('ai-widget-btn');
         const chatContainer = document.getElementById('chat-container');
         const closeChat = document.getElementById('close-chat');
