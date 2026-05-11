@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHASSBLAN // SECURE PROTOCOL V3.5</title>
+    <title>CHASSBLAN // SECURE PROTOCOL V3.6</title>
     <style>
         /*==========================================================================
-          1. SYSTEM ARCHITECTURE & ROOT CONFIGURATION (1-60)
+          1. SYSTEM ARCHITECTURE & ROOT CONFIGURATION
           ==========================================================================*/
         :root {
             --stark-cyan: #00f0ff;
@@ -66,7 +66,7 @@
         }
 
         /*==========================================================================
-          2. SCROLLBARS & UTILITIES (61-100)
+          2. SCROLLBARS & UTILITIES
           ==========================================================================*/
         ::-webkit-scrollbar {
             width: 5px;
@@ -82,7 +82,7 @@
         }
 
         /*==========================================================================
-          3. MAIN HUB LAYOUT (101-200)
+          3. MAIN HUB LAYOUT
           ==========================================================================*/
         .stark-grid-container {
             position: relative;
@@ -97,7 +97,7 @@
         }
 
         /*==========================================================================
-          4. HEADER BAR (201-300)
+          4. HEADER BAR
           ==========================================================================*/
         .hud-header {
             grid-column: 1 / 4;
@@ -184,7 +184,7 @@
         }
 
         /*==========================================================================
-          5. LEFT COLUMN: DIAGNOSTIC & TELEMETRY (301-450)
+          5. LEFT COLUMN: DIAGNOSTIC & TELEMETRY
           ==========================================================================*/
         .left-column {
             grid-column: 1;
@@ -327,7 +327,7 @@
         }
 
         /*=========================================
-          6. CENTER COLUMN: INTERACTIVE HUD & TERMINAL (451-650)
+          6. CENTER COLUMN: INTERACTIVE HUD & TERMINAL
           =========================================*/
         .center-column {
             grid-column: 2;
@@ -520,7 +520,7 @@
         }
 
         /*==========================================================================
-          7. RIGHT COLUMN: INTEGRATED JARVIS CONSOLE CHAT (651-850)
+          7. RIGHT COLUMN: INTEGRATED JARVIS CONSOLE CHAT
           ==========================================================================*/
         .right-column {
             grid-column: 3;
@@ -614,7 +614,7 @@
             border-top: 1px solid rgba(0, 240, 255, 0.3);
             padding: 12px;
             display: flex;
-            gap: 8px;
+            gap: 10px;
             background: rgba(5, 8, 17, 0.95);
             align-items: center;
         }
@@ -637,33 +637,35 @@
             box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
         }
 
-        /* BOUTON MICRO VOICE COMPONENT */
+        /* BOUTON MICRO CORRIGÉ (TEXTE VISIBLE ET CLAIR) */
         .voice-mic-btn {
             background: transparent;
-            border: 1px solid rgba(0, 240, 255, 0.4);
+            border: 1px solid var(--stark-cyan);
             color: var(--stark-cyan);
-            width: 38px;
+            padding: 0 10px;
             height: 38px;
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: bold;
             transition: all 0.3s;
             box-shadow: 0 0 8px rgba(0, 240, 255, 0.1);
         }
 
         .voice-mic-btn:hover {
-            border-color: var(--stark-cyan);
-            background: rgba(0, 240, 255, 0.1);
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 15px var(--stark-cyan);
         }
 
         .voice-mic-btn.listening {
             border-color: var(--stark-pink);
             color: #fff;
-            background: rgba(255, 0, 127, 0.2);
-            box-shadow: 0 0 15px var(--stark-pink);
+            background: rgba(255, 0, 127, 0.3);
+            box-shadow: 0 0 20px var(--stark-pink);
             animation: mic-blink 1s infinite alternate;
         }
 
@@ -689,7 +691,7 @@
         }
 
         /*==========================================================================
-          8. FOOTER METRICS SYSTEM (851-950)
+          8. FOOTER METRICS SYSTEM
           ==========================================================================*/
         .hud-footer {
             grid-column: 1 / 4;
@@ -707,7 +709,7 @@
         }
 
         /*==========================================================================
-          9. INTEGRATED MUSIC PLAYER PANEL (951-1050)
+          9. INTEGRATED MUSIC PLAYER PANEL
           ==========================================================================*/
         .music-player-panel {
             display: flex;
@@ -744,17 +746,11 @@
         }
 
         /*==========================================================================
-          10. DETAILED ANIMATIONS KEYFRAMES (1051-1200)
+          10. DETAILED ANIMATIONS KEYFRAMES
           ==========================================================================*/
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes spin-reverse {
-            100% { transform: rotate(-360deg); }
-        }
-        @keyframes rotate-radar {
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
+        @keyframes rotate-radar { 100% { transform: rotate(360deg); } }
         @keyframes pulse-central {
             0% { transform: scale(0.96); opacity: 0.8; filter: drop-shadow(0 0 10px var(--stark-cyan)); }
             100% { transform: scale(1.04); opacity: 1; filter: drop-shadow(0 0 25px var(--stark-cyan)); }
@@ -800,7 +796,7 @@
             <div class="header-system-status">
                 <div class="status-item">
                     <span class="status-indicator pulse"></span>
-                    <span>JARVIS INTERFACE v3.5</span>
+                    <span>JARVIS INTERFACE v3.6</span>
                 </div>
                 <div class="status-item">
                     <span class="status-indicator"></span>
@@ -887,7 +883,7 @@
 
                 <div class="welcome-stark-typography">
                     <h1 class="welcome-stark-title">WELCOME TO CHASSBLAN HUB</h1>
-                    <p class="welcome-stark-subtitle">F.R.I.D.A.Y. STANDING BY. JARVIS VOICE LINKS DEPLOYED.</p>
+                    <p class="welcome-stark-subtitle">F.R.I.D.A.Y. STANDING BY. JARVIS VOICE DEPLOYED.</p>
                 </div>
             </div>
 
@@ -929,19 +925,14 @@
                     <div class="msg-block jarvis-response">
                         [JARVIS]: Protocole de liaison activé et hautement crypté. <br><br>
                         Salut ! Je suis JARVIS, ton IA système. J'ai été configuré pour hériter de ta mentalité exacte.<br><br>
-                        <strong>Nouveau protocole activé :</strong> Tu peux utiliser le bouton Micro ci-dessous pour me parler directement de vive voix ! Essaye pour voir.
+                        <strong>Nouveau protocole activé :</strong> Clique sur le bouton "🎤 MICRO" ci-dessous, autorise ton navigateur et parle directement !
                         <span class="msg-timestamp">13:46:48</span>
                     </div>
                 </div>
 
                 <div class="chat-control-area">
                     <button class="voice-mic-btn" id="voice-mic-btn" title="Parler avec JARVIS">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                            <line x1="12" y1="19" x2="12" y2="23"/>
-                            <line x1="8" y1="23" x2="16" y2="23"/>
-                        </svg>
+                        🎤 MICRO
                     </button>
                     <input type="text" class="chat-input-text" id="jarvis-input" placeholder="Écris ou parle par micro..." autocomplete="off">
                     <button class="chat-send-btn" id="jarvis-send-btn">SEND</button>
@@ -995,7 +986,7 @@
                      - <strong>contact</strong> : Extrait les protocoles d'accès d'Adnane.<br>
                      - <strong>secret</strong> : Révèle les plans tactiques à venir.`,
             'system': `[DIAGNOSTIC]:<br>
-                       - Nom de l'hôte : CHASSBLAN CORE ENGINE v3.5<br>
+                       - Nom de l'hôte : CHASSBLAN CORE ENGINE v3.6<br>
                        - Emplacement : Bouznika, Maroc<br>
                        - Écosystème : Samsung Integration & Google Home<br>
                        - Statut d'allégeance : Real Madrid (HALA MADRID!)<br>
@@ -1074,12 +1065,12 @@
             jarvisOutputBox.scrollTop = jarvisOutputBox.scrollHeight;
         }
 
-        /* INTEGRATION RECONNAISSANCE VOCALE (VOICE INPUT) */
+        /* INTEGRATION RECONNAISSANCE VOCALE PROPRE */
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
 
-            recognition.lang = 'fr-FR'; // Langue configurée en Français
+            recognition.lang = 'fr-FR';
             recognition.interimResults = false;
             recognition.maxAlternatives = 1;
 
@@ -1093,28 +1084,31 @@
 
             recognition.onstart = () => {
                 voiceMicBtn.classList.add('listening');
+                voiceMicBtn.innerText = "🎤 ÉCOUTE...";
                 jarvisInput.placeholder = "JARVIS t'écoute...";
             };
 
             recognition.onend = () => {
                 voiceMicBtn.classList.remove('listening');
+                voiceMicBtn.innerText = "🎤 MICRO";
                 jarvisInput.placeholder = "Écris ou parle par micro...";
             };
 
-            recognition.onerror = () => {
+            recognition.onerror = (e) => {
+                console.error(e);
                 voiceMicBtn.classList.remove('listening');
-                jarvisInput.placeholder = "Erreur de connexion micro...";
+                voiceMicBtn.innerText = "🎤 ERROR";
+                jarvisInput.placeholder = "Erreur micro. Réessaye...";
             };
 
             recognition.onresult = (event) => {
                 const speechToText = event.results[0][0].transcript;
                 jarvisInput.value = speechToText;
-                processJarvisQuery(); // Envoie automatiquement la commande transcrite
+                processJarvisQuery();
             };
         } else {
-            // Si le navigateur ne supporte pas la reconnaissance vocale
             voiceMicBtn.addEventListener('click', () => {
-                alert("La reconnaissance vocale n'est pas supportée par ton navigateur actuel. Utilise Google Chrome ou Edge !");
+                alert("La reconnaissance vocale n'est pas supportée par ce navigateur. Utilise Google Chrome, Edge ou Safari !");
             });
         }
 
