@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHASSBLAN // SECURE PROTOCOL V3.0</title>
+    <title>CHASSBLAN // SECURE PROTOCOL V3.5</title>
     <style>
         /*==========================================================================
           1. SYSTEM ARCHITECTURE & ROOT CONFIGURATION (1-60)
@@ -614,8 +614,9 @@
             border-top: 1px solid rgba(0, 240, 255, 0.3);
             padding: 12px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             background: rgba(5, 8, 17, 0.95);
+            align-items: center;
         }
 
         .chat-input-text {
@@ -636,11 +637,42 @@
             box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
         }
 
+        /* BOUTON MICRO VOICE COMPONENT */
+        .voice-mic-btn {
+            background: transparent;
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            color: var(--stark-cyan);
+            width: 38px;
+            height: 38px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.1);
+        }
+
+        .voice-mic-btn:hover {
+            border-color: var(--stark-cyan);
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+        }
+
+        .voice-mic-btn.listening {
+            border-color: var(--stark-pink);
+            color: #fff;
+            background: rgba(255, 0, 127, 0.2);
+            box-shadow: 0 0 15px var(--stark-pink);
+            animation: mic-blink 1s infinite alternate;
+        }
+
         .chat-send-btn {
             background: var(--stark-cyan);
             color: var(--stark-deep-space);
             border: none;
-            padding: 0 18px;
+            height: 38px;
+            padding: 0 15px;
             border-radius: 4px;
             cursor: pointer;
             font-family: inherit;
@@ -748,6 +780,10 @@
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes mic-blink {
+            0% { box-shadow: 0 0 5px var(--stark-pink); opacity: 0.8; }
+            100% { box-shadow: 0 0 20px var(--stark-pink); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -764,7 +800,7 @@
             <div class="header-system-status">
                 <div class="status-item">
                     <span class="status-indicator pulse"></span>
-                    <span>JARVIS INTERFACE v3.2</span>
+                    <span>JARVIS INTERFACE v3.5</span>
                 </div>
                 <div class="status-item">
                     <span class="status-indicator"></span>
@@ -851,7 +887,7 @@
 
                 <div class="welcome-stark-typography">
                     <h1 class="welcome-stark-title">WELCOME TO CHASSBLAN HUB</h1>
-                    <p class="welcome-stark-subtitle">F.R.I.D.A.Y. STANDING BY. JARVIS CORE LINKED.</p>
+                    <p class="welcome-stark-subtitle">F.R.I.D.A.Y. STANDING BY. JARVIS VOICE LINKS DEPLOYED.</p>
                 </div>
             </div>
 
@@ -892,14 +928,22 @@
                 <div class="jarvis-messages-area" id="jarvis-output-box">
                     <div class="msg-block jarvis-response">
                         [JARVIS]: Protocole de liaison activé et hautement crypté. <br><br>
-                        Salut ! Je suis JARVIS, ton IA système. J'ai été configuré pour hériter de ta mentalité exacte. Je connais tes passions de fou, ta façon de parler et tes plus grands projets.<br><br>
-                        Pose-moi n'importe quelle question sur toi, ou commence à discuter ! 
+                        Salut ! Je suis JARVIS, ton IA système. J'ai été configuré pour hériter de ta mentalité exacte.<br><br>
+                        <strong>Nouveau protocole activé :</strong> Tu peux utiliser le bouton Micro ci-dessous pour me parler directement de vive voix ! Essaye pour voir.
                         <span class="msg-timestamp">13:46:48</span>
                     </div>
                 </div>
 
                 <div class="chat-control-area">
-                    <input type="text" class="chat-input-text" id="jarvis-input" placeholder="Envoyer un message à JARVIS..." autocomplete="off">
+                    <button class="voice-mic-btn" id="voice-mic-btn" title="Parler avec JARVIS">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                            <line x1="12" y1="19" x2="12" y2="23"/>
+                            <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                    </button>
+                    <input type="text" class="chat-input-text" id="jarvis-input" placeholder="Écris ou parle par micro..." autocomplete="off">
                     <button class="chat-send-btn" id="jarvis-send-btn">SEND</button>
                 </div>
             </div>
@@ -946,28 +990,25 @@
         const termResponses = {
             'help': `Commandes valides :<br>
                      - <strong>system</strong> : Affiche les informations de diagnostic système.<br>
-                     - <strong>scan</strong> : Lance une recherche des serveurs de jeu actifs (Fortnite, CoD, GTA).<br>
-                     - <strong>clear</strong> : Efface l'historique complet de la console.<br>
-                     - <strong>contact</strong> : Extrait les protocoles d'accès d'Adnane El Amraoui.<br>
+                     - <strong>scan</strong> : Lance une recherche des serveurs de jeu actifs.<br>
+                     - <strong>clear</strong> : Efface l'historique de la console.<br>
+                     - <strong>contact</strong> : Extrait les protocoles d'accès d'Adnane.<br>
                      - <strong>secret</strong> : Révèle les plans tactiques à venir.`,
             'system': `[DIAGNOSTIC]:<br>
-                       - Nom de l'hôte : CHASSBLAN CORE ENGINE v3.0<br>
-                       - Emplacement physique : Bouznika, Maroc<br>
-                       - Écosystème central : Samsung Integration & Google Home<br>
-                       - Moteur logique : IA JARVIS & IA F.R.I.D.A.Y v9.2<br>
-                       - Statut d'allégeance : Real Madrid Club de Fútbol (HALA MADRID!)<br>
-                       - Protocole d'études : Baccalauréat Sciences Physiques (Sera validé le 4 Juin)`,
+                       - Nom de l'hôte : CHASSBLAN CORE ENGINE v3.5<br>
+                       - Emplacement : Bouznika, Maroc<br>
+                       - Écosystème : Samsung Integration & Google Home<br>
+                       - Statut d'allégeance : Real Madrid (HALA MADRID!)<br>
+                       - Protocole d'études : Baccalauréat Sciences Physiques (4 Juin)`,
             'scan': `[SCANNING ACTIVE SERVERS]...<br>
-                     - Fortnite Server: CONNECTED (Pièce control de malade détecté)<br>
+                     - Fortnite Server: CONNECTED (Pièce control optimal)<br>
                      - GTA V Server: ONLINE (Stark Character Skin Active)<br>
-                     - MW3 Server: CONNECTED<br>
-                     - Status: All systems optimized for maximum gaming performance.`,
+                     - MW3 Server: CONNECTED`,
             'contact': `[PROTCOLE INSTAGRAM]:<br>
                         - Nom d'utilisateur principal : @chassblan.mr<br>
-                        - Canal de communication prioritaire : DM Instagram (temps de réponse moyen < 5 min)`,
+                        - Canal de communication : DM Instagram`,
             'secret': `[TOP-SECRET TARGET FILE]:<br>
-                       - Objectif Design : Création d'un rendu photoréaliste BMW M3 CS en Noir Mat ultra-agressif.<br>
-                       - Statut : En cours de modélisation dans le terminal.`
+                       - Objectif Design : Création d'un rendu BMW M3 CS en Noir Mat.`
         };
 
         termInput.addEventListener('keypress', function(e) {
@@ -975,13 +1016,11 @@
                 const command = termInput.value.trim().toLowerCase();
                 termInput.value = '';
 
-                // Display User Entered Line
                 const userLine = document.createElement('div');
                 userLine.className = 'terminal-line output-user';
                 userLine.innerHTML = `root@chassblan:~$ ${command}`;
                 termLogs.appendChild(userLine);
 
-                // Handle commands logic
                 setTimeout(() => {
                     const responseLine = document.createElement('div');
                     if (command === 'clear') {
@@ -1000,10 +1039,11 @@
             }
         });
 
-        /* JARVIS Chat Brain & Personality Configuration (100% Personality Mapping) */
+        /* JARVIS Chat Brain & Voice Configuration */
         const jarvisInput = document.getElementById('jarvis-input');
         const jarvisSendBtn = document.getElementById('jarvis-send-btn');
         const jarvisOutputBox = document.getElementById('jarvis-output-box');
+        const voiceMicBtn = document.getElementById('voice-mic-btn');
 
         jarvisSendBtn.addEventListener('click', processJarvisQuery);
         jarvisInput.addEventListener('keypress', function(e) {
@@ -1014,11 +1054,9 @@
             const query = jarvisInput.value.trim();
             if (query === "") return;
 
-            // Display user message in chatbox
             appendChatMsg(query, 'user-query');
             jarvisInput.value = '';
 
-            // Generate precise JARVIS matching response with your exact tone
             setTimeout(() => {
                 const responseText = computeBrainLogic(query.toLowerCase());
                 appendChatMsg(responseText, 'jarvis-response');
@@ -1036,56 +1074,84 @@
             jarvisOutputBox.scrollTop = jarvisOutputBox.scrollHeight;
         }
 
+        /* INTEGRATION RECONNAISSANCE VOCALE (VOICE INPUT) */
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+
+            recognition.lang = 'fr-FR'; // Langue configurée en Français
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            voiceMicBtn.addEventListener('click', () => {
+                if (voiceMicBtn.classList.contains('listening')) {
+                    recognition.stop();
+                } else {
+                    recognition.start();
+                }
+            });
+
+            recognition.onstart = () => {
+                voiceMicBtn.classList.add('listening');
+                jarvisInput.placeholder = "JARVIS t'écoute...";
+            };
+
+            recognition.onend = () => {
+                voiceMicBtn.classList.remove('listening');
+                jarvisInput.placeholder = "Écris ou parle par micro...";
+            };
+
+            recognition.onerror = () => {
+                voiceMicBtn.classList.remove('listening');
+                jarvisInput.placeholder = "Erreur de connexion micro...";
+            };
+
+            recognition.onresult = (event) => {
+                const speechToText = event.results[0][0].transcript;
+                jarvisInput.value = speechToText;
+                processJarvisQuery(); // Envoie automatiquement la commande transcrite
+            };
+        } else {
+            // Si le navigateur ne supporte pas la reconnaissance vocale
+            voiceMicBtn.addEventListener('click', () => {
+                alert("La reconnaissance vocale n'est pas supportée par ton navigateur actuel. Utilise Google Chrome ou Edge !");
+            });
+        }
+
         function computeBrainLogic(inp) {
-            // Self and creation info
             if (inp.includes('qui es-tu') || inp.includes('t\'es qui') || inp.includes('ton nom') || inp.includes('presentation')) {
-                return "[JARVIS]: Je suis JARVIS, l'assistant à intelligence virtuelle d'Adnane. Je ne suis pas une IA basique du net : mes paramètres logiques ont été calibrés à 100% sur sa mentalité. Je gère ses réseaux et ses systèmes d'accès.";
+                return "[JARVIS]: Je suis JARVIS, ton IA de liaison Stark personnelle. Calibrée sur ta mentalité exacte. Je gère ce terminal et je te remplace sur le réseau.";
             }
             if (inp.includes('adnane') || inp.includes('qui est ton créateur') || inp.includes('createur') || inp.includes('le boss')) {
-                return "[JARVIS]: Adnane El Amraoui. C'est le créateur et le seul boss de cette infrastructure. Il a un sens du design ultra-poussé, un style inspiré de Stark, et il est actuellement en terminale Bac Sciences Physiques en pleine préparation de ses examens.";
+                return "[JARVIS]: Adnane El Amraoui. C'est lui le boss de cette infrastructure. Designer, passionné de technologie et d'IA, actuellement en 2BAC Sciences Physiques en pleine préparation de ses exams de juin.";
             }
-
-            // Real Madrid Vibe
             if (inp.includes('foot') || inp.includes('real') || inp.includes('madrid') || inp.includes('barca') || inp.includes('hala')) {
-                return "[JARVIS]: Ah, le football ! Sur ce point, la directive d'Adnane est absolue et intransigeante : <strong>HALA MADRID !</strong> On est dans le camp des plus grands d'Europe. Les rivaux n'ont aucune chance ici.";
+                return "[JARVIS]: Directive prioritaire enregistrée : <strong>HALA MADRID !</strong> Les statistiques de victoires confirment notre domination, l'ami.";
             }
-
-            // Studies / Bac Sciences Physiques / Date
             if (inp.includes('bac') || inp.includes('etudes') || inp.includes('cours') || inp.includes('sciences physiques') || inp.includes('examen')) {
-                return "[JARVIS]: Actuellement dans la phase finale du 2BAC Sciences Physiques. Notre plan d'action d'entraînement est configuré pour être optimal. Le coup d'envoi des examens nationaux est fixé au 4 juin. Adnane est prêt à tout écraser.";
+                return "[JARVIS]: Le plan de préparation pour le Bac Sciences Physiques est actif et tourne à 100%. Début des épreuves nationales fixé au 4 juin. On va tout plier.";
             }
-
-            // Cars / Automotive Passion
             if (inp.includes('voiture') || inp.includes('bmw') || inp.includes('m3') || inp.includes('ford') || inp.includes('fusion') || inp.includes('caisse')) {
-                return "[JARVIS]: Niveau automobile, Adnane a des goûts extrêmement précis. L'objectif absolu sur notre radar, c'est de concevoir ou de rouler en <strong>BMW M3 CS</strong> ou dans une sublime <strong>Ford Fusion Titanium</strong> bien agressive en noir mat. L'esthétique Stark brute.";
+                return "[JARVIS]: Objectif garage : une agressive <strong>BMW M3 CS</strong> ou une <strong>Ford Fusion Titanium</strong> customisée en noir mat profond. Un style Stark irréprochable.";
             }
-
-            // Tech & Smart Home Preferences
             if (inp.includes('samsung') || inp.includes('apple') || inp.includes('setup') || inp.includes('pc') || inp.includes('telephone') || inp.includes('iphone')) {
-                return "[JARVIS]: Question matériel, on roule exclusivement sur l'écosystème Samsung. La puissance, l'ouverture applicative et la connexion transparente avec nos systèmes Google Home pour automatiser l'atelier. Apple ? Beaucoup trop fermé pour notre protocole de liberté.";
+                return "[JARVIS]: On tourne sur du Samsung interconnecté avec Google Home. Pas de place pour l'écosystème fermé d'Apple dans cet atelier.";
             }
-
-            // Music Preferences (Phonk / Brazilian Funk slowed)
             if (inp.includes('musique') || inp.includes('son') || inp.includes('playlist') || inp.includes('phonk') || inp.includes('funk') || inp.includes('brazilian')) {
-                return "[JARVIS]: Son carburant pour coder et designer toute la nuit : de la Phonk sauvage et du Brazilian Funk lourd, de préférence en version slowed & reverb. Ça maintient la concentration à 200%. D'ailleurs, notre lecteur système est en train d'en diffuser actuellement.";
+                return "[JARVIS]: Brazilian Funk ou Phonk en boucle (Slowed & Reverb). C'est le carburant idéal pour designer sur Photoshop ou coder sans s'arrêter.";
             }
-
-            // Gaming Abilities (Fortnite & GTA V)
             if (inp.includes('gaming') || inp.includes('jeu') || inp.includes('fortnite') || inp.includes('gta') || inp.includes('cod')) {
-                return "[JARVIS]: Ne te frotte pas à Adnane en build-fight sur Fortnite, son niveau de piece control est impeccable. S'il n'est pas sur le Battle Royale, il arpente les rues de GTA Online avec un skin inspiré de Stark, ou se fait des sessions de tir sur Call of Duty.";
+                return "[JARVIS]: Sur Fortnite, personne ne rivalise sur notre piece control. Sinon c'est des sessions de GTA Online ou du bon vieux Call of Duty pour relâcher la pression.";
             }
-
-            // Bouznika & Instagram contact
             if (inp.includes('insta') || inp.includes('contact') || inp.includes('instagram') || inp.includes('rejoindre') || inp.includes('chassblan')) {
-                return "[JARVIS]: Tu veux joindre le boss directement ? Son Instagram officiel est <strong>@chassblan.mr</strong>. Envoie un DM, il te répondra dès qu'il lève la tête de ses designs ou de ses révisions.";
+                return "[JARVIS]: Contact d'Adnane établi : <strong>@chassblan.mr</strong> sur Instagram. Fais-lui signe là-bas !";
             }
 
-            // Multi-query fallback answers matching Stark style
             const defaultAnswers = [
-                "[JARVIS]: Requête reçue. Cependant, la clé d'authentification Stark n'est pas suffisante pour débloquer cette info. Essaye de me questionner sur le Real Madrid, le Bac Sciences Physiques d'Adnane ou ses voitures préférées.",
-                "[JARVIS]: Analyse sémantique infructueuse. Néanmoins, en fouillant sa mémoire logique, je peux te parler de son amour pour la Phonk ralentie, de son setup connecté Samsung, ou de ses stats de jeu.",
-                "[JARVIS]: Protocoles de sécurité en cours de recalibrage... Pose-moi tes questions sur @chassblan.mr, la BMW M3 CS ou ses sessions d'entraînement de Bac !",
-                "[JARVIS]: Accès refusé par le protocole central. Adnane a crypté cette section. Revenons à nos passions favorites : le design ou l'ambiance Stark !"
+                "[JARVIS]: Requête reçue. Cependant, la clé d'authentification Stark n'est pas suffisante pour débloquer cette info. Essaye de me questionner sur le Real Madrid, le Bac d'Adnane ou ses voitures préférées.",
+                "[JARVIS]: Analyse sémantique infructueuse. Néanmoins, je peux te parler de sa passion pour la Phonk ralentie, de son setup connecté Samsung, ou de ses stats de jeu.",
+                "[JARVIS]: Protocoles de sécurité en cours de recalibrage... Pose-moi des questions sur @chassblan.mr, sa BMW M3 CS ou ses sessions d'entraînement !",
+                "[JARVIS]: Accès refusé par le protocole central. Adnane a crypté cette section. Revenons à nos sujets favoris : le design ou l'ambiance Stark !"
             ];
             return defaultAnswers[Math.floor(Math.random() * defaultAnswers.length)];
         }
