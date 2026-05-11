@@ -14,9 +14,148 @@
             padding: 0;
             height: 100vh;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* BOUTON FLOTTANT (L'ORBE DE L'IA) */
+        /*=========================================
+          MESSAGE D'ACCUEIL F.R.I.D.A.Y. (AU MILIEU)
+          =========================================*/
+        .welcome-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            text-align: left;
+            z-index: 1;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .friday-logo {
+            width: 100px;
+            height: 100px;
+            border: 4px solid #00f0ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+            font-weight: 900;
+            text-shadow: 0 0 15px #00f0ff;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            animation: pulse 2s infinite alternate;
+        }
+
+        .welcome-text h1 {
+            font-size: 32px;
+            margin: 0 0 10px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #00f0ff;
+        }
+
+        .welcome-text p {
+            font-size: 18px;
+            margin: 0;
+            color: rgba(0, 240, 255, 0.8);
+            letter-spacing: 1px;
+            line-height: 1.4;
+        }
+
+        /*=========================================
+          INTERFACE JARVIS (EN BAS À GAUCHE)
+          =========================================*/
+        .jarvis-interface {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            align-items: flex-end;
+            gap: 25px;
+            z-index: 10;
+        }
+
+        /* Orbe JARVIS */
+        .jarvis-orb-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .jarvis-orb {
+            width: 90px;
+            height: 90px;
+            background: radial-gradient(circle, rgba(0,240,255,0.8) 0%, rgba(0,95,115,0.8) 70%, transparent 100%);
+            border: 2px solid #00f0ff;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px #fff;
+            animation: pulse 2s infinite alternate;
+        }
+
+        .jarvis-ring-1, .jarvis-ring-2 {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px dashed rgba(0, 240, 255, 0.6);
+        }
+
+        .jarvis-ring-1 {
+            width: 120px;
+            height: 120px;
+            animation: spin 10s linear infinite;
+        }
+
+        .jarvis-ring-2 {
+            width: 136px;
+            height: 136px;
+            border-style: double;
+            border-width: 2px;
+            border-color: rgba(0, 240, 255, 0.3) transparent;
+            animation: spin-reverse 6s linear infinite;
+        }
+
+        /* Infos Stark à côté de l'orbe */
+        .jarvis-data {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-left: 1px solid rgba(0, 240, 255, 0.3);
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .data-block {
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .data-block h4 {
+            margin: 0 0 4px 0;
+            color: #00f0ff;
+            letter-spacing: 1px;
+            font-size: 12px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            padding-bottom: 2px;
+        }
+
+        .data-block p {
+            margin: 2px 0;
+            color: rgba(0, 240, 255, 0.7);
+        }
+
+        /*=========================================
+          WIDGET DE CHAT (EN BAS À DROITE)
+          =========================================*/
         #ai-widget-btn {
             position: fixed;
             bottom: 30px;
@@ -61,7 +200,7 @@
             border: 1px solid #00f0ff;
             border-radius: 12px;
             box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
-            display: none; /* Masqué par défaut */
+            display: none;
             flex-direction: column;
             overflow: hidden;
             z-index: 9998;
@@ -108,7 +247,7 @@
             font-size: 13px;
         }
 
-        /* MESSAGE STYLE */
+        /* STYLE DES MESSAGES */
         .message {
             max-width: 80%;
             padding: 10px 14px;
@@ -174,9 +313,16 @@
             box-shadow: 0 0 12px #00f0ff;
         }
 
-        /* ANIMATION ROTATION */
+        /* ANIMATIONS GLOBAUX */
         @keyframes spin {
             100% { transform: rotate(360deg); }
+        }
+        @keyframes spin-reverse {
+            100% { transform: rotate(-360deg); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            100% { transform: scale(1.03); opacity: 1; box-shadow: 0 0 30px rgba(0, 240, 255, 0.8); }
         }
 
         /* SCROLLBAR CUSTOM */
@@ -189,6 +335,45 @@
     </style>
 </head>
 <body>
+
+    <div class="welcome-container">
+        <div class="friday-logo">F</div>
+        <div class="welcome-text">
+            <h1>WELCOME TO CHASSBLAN HUB //</h1>
+            <p>F.R.I.D.A.Y. STANDING BY.<br>JARVIS MODULES DEPLOYED.</p>
+        </div>
+    </div>
+
+    <div class="jarvis-interface">
+        <div class="jarvis-orb-container">
+            <div class="jarvis-ring-1"></div>
+            <div class="jarvis-ring-2"></div>
+            <div class="jarvis-orb">JARVIS</div>
+        </div>
+        <div class="jarvis-data">
+            <div class="data-block">
+                <h4>GAMING STATUS</h4>
+                <p>FORTNITE: ACTIVE</p>
+                <p>GTA V: ONLINE</p>
+                <p>MW3: ONLINE</p>
+            </div>
+            <div class="data-block">
+                <h4>DEV TERMINAL</h4>
+                <p>CODE: VS CODE ACTIVE</p>
+                <p>DESIGN: PHOTOSHOP ACTIVE</p>
+                <p>SYSTEM: OPTIMIZED</p>
+            </div>
+            <div class="data-block">
+                <h4>LIFE HUB</h4>
+                <p>BAC PREP: 100% RUNNING</p>
+                <p>LOCATION: BOUZNIKA, MA</p>
+            </div>
+            <div class="data-block">
+                <h4>TARGET</h4>
+                <p>NEXT GOAL: BMW M3 CS CONCEPT</p>
+            </div>
+        </div>
+    </div>
 
     <div id="ai-widget-btn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -263,24 +448,13 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        // BASE DE CONNAISSANCES DE L'IA (Ton style Stark & personnalisé)
+        // BASE DE CONNAISSANCES DE L'IA (Sans marque, focus sur toi)
         function getBotResponse(input) {
-            // Qui es-tu / qui est adnane
             if (input.includes('qui es-tu') || input.includes('t\'es qui') || input.includes('presentation')) {
                 return "[E.D.I.T.H.]: Je suis une IA de protocole de sécurité de niveau 4, conçue pour représenter Adnane El Amraoui quand il n'est pas dispo. Je gère son réseau, ses projets et je m'assure que personne ne touche à son code.";
             }
             if (input.includes('qui est adnane') || input.includes('adnane')) {
                 return "[E.D.I.T.H.]: Adnane ? C'est le créateur de ce site. Designer de marque, créateur de contenu, passionné d'IA, de cybersécurité et de tech style Stark. Ah, et grand fan du Real Madrid (Hala Madrid !).";
-            }
-
-            // Projets / Lumina
-            if (input.includes('lumina') || input.includes('marque') || input.includes('vetement') || input.includes('streetwear')) {
-                return "[E.D.I.T.H.]: LUMINA. C'est son projet de marque streetwear ultra-visuelle. Le drop arrive très bientôt, reste branché sur son Instagram.";
-            }
-
-            // Tech / Musique / Car
-            if (input.includes('musique') || input.includes('phonk') || input.includes('son')) {
-                return "[E.D.I.T.H.]: Niveau son, c'est Brazilian Funk ou Phonk en boucle, 24/7. De préférence des versions slowed & reverb pour bosser sur ses designs.";
             }
             if (input.includes('voiture') || input.includes('m3') || input.includes('ford')) {
                 return "[E.D.I.T.H.]: Sa voiture de rêve ? BMW M3 CS ou une Ford Fusion Titanium bien modifiée et agressive en noir mat. Classe et puissant, style Stark.";
@@ -288,21 +462,16 @@
             if (input.includes('setup') || input.includes('pc') || input.includes('telephone')) {
                 return "[E.D.I.T.H.]: Système 100% connecté. Team Samsung pour l'écosystème ouvert et Google Home pour automatiser sa chambre comme l'atelier de Tony Stark. Pas de place pour la pomme fermée ici.";
             }
-
-            // Gaming
             if (input.includes('fortnite') || input.includes('jeu') || input.includes('gaming') || input.includes('gta')) {
                 return "[E.D.I.T.H.]: Quand il n'est pas sur Photoshop ou VS Code, tu peux le trouver sur Fortnite (gros niveau de piece control, respecte stp), sur GTA Online avec un skin style Iron Man, ou sur Call of Duty.";
             }
-
-            // Contact / Insta
             if (input.includes('insta') || input.includes('contact') || input.includes('instagram') || input.includes('reseau')) {
-                return "[E.D.I.T.H.]: Tu peux le ping sur son Instagram officiel : **@chassblan.mr**. Envoie un DM, il répond vite (sauf s'il est en plein rush d'idées).";
+                return "[E.D.I.T.H.]: Tu peux le ping sur son Instagram officiel : **@chassblan.mr**. Envoie un DM, il répond vite !";
             }
 
-            // Réponses par défaut fun (Vibe Stark)
             const defaultAnswers = [
                 "[E.D.I.T.H.]: Requête reçue, mais l'accès à cette base de données nécessite une autorisation de Tony Stark. Pose-moi une autre question !",
-                "[E.D.I.T.H.]: Analyse en cours... Je ne trouve pas la réponse exacte dans mes serveurs, mais essaye de me parler de ses designs, de sa marque **LUMINA**, de gaming ou de ses sons préférés.",
+                "[E.D.I.T.H.]: Analyse en cours... Je ne trouve pas la réponse exacte dans mes serveurs, mais essaye de me parler de ses projets, de gaming, ou de ses voitures préférées.",
                 "[E.D.I.T.H.]: *Bip boop* Désolée, je recalibre mes capteurs. Repose ta question d'une autre manière !",
                 "[E.D.I.T.H.]: Adnane m'a dit de ne pas divulguer d'informations top-secrètes sans l'authentification de son compte principal."
             ];
