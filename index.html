@@ -3,360 +3,1092 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Site Perso</title>
+    <title>CHASSBLAN // SECURE PROTOCOL V3.0</title>
     <style>
-        /* BASE & THEME STARK */
-        body {
-            background-color: #0a0e17;
-            font-family: 'Courier New', Courier, monospace;
-            color: #00f0ff;
+        /*==========================================================================
+          1. SYSTEM ARCHITECTURE & ROOT CONFIGURATION (1-60)
+          ==========================================================================*/
+        :root {
+            --stark-cyan: #00f0ff;
+            --stark-neon-blue: #0088ff;
+            --stark-dark-blue: #0a111e;
+            --stark-deep-space: #050811;
+            --stark-pink: #ff007f;
+            --stark-red: #ff3333;
+            --stark-neon-green: #39ff14;
+            --hud-glow: rgba(0, 240, 255, 0.45);
+            --stark-glow-heavy: 0 0 25px rgba(0, 240, 255, 0.85);
+            --terminal-font: 'Courier New', Courier, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        html, body {
+            background-color: var(--stark-deep-space);
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(10, 25, 47, 0.6) 0%, rgba(5, 8, 17, 1) 100%),
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 100%, 100% 4px, 6px 100%;
+            font-family: var(--terminal-font);
+            color: var(--stark-cyan);
             margin: 0;
             padding: 0;
+            width: 100vw;
             height: 100vh;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
-        /*=========================================
-          MESSAGE D'ACCUEIL F.R.I.D.A.Y. (AU MILIEU)
-          =========================================*/
-        .welcome-container {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            text-align: left;
-            z-index: 1;
-            max-width: 800px;
-            padding: 20px;
-        }
-
-        .friday-logo {
-            width: 100px;
-            height: 100px;
-            border: 4px solid #00f0ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 55px;
-            font-weight: 900;
-            text-shadow: 0 0 15px #00f0ff;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-            animation: pulse 2s infinite alternate;
-        }
-
-        .welcome-text h1 {
-            font-size: 32px;
-            margin: 0 0 10px 0;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px #00f0ff;
-        }
-
-        .welcome-text p {
-            font-size: 18px;
-            margin: 0;
-            color: rgba(0, 240, 255, 0.8);
-            letter-spacing: 1px;
-            line-height: 1.4;
-        }
-
-        /*=========================================
-          INTERFACE JARVIS (EN BAS À GAUCHE)
-          =========================================*/
-        .jarvis-interface {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 20px;
-            z-index: 10;
-        }
-
-        /* Orbe JARVIS (Bouton d'activation) */
-        .jarvis-orb-container {
-            position: relative;
-            width: 140px;
-            height: 140px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .jarvis-orb {
-            width: 90px;
-            height: 90px;
-            background: radial-gradient(circle, rgba(0,240,255,0.8) 0%, rgba(0,95,115,0.8) 70%, transparent 100%);
-            border: 2px solid #00f0ff;
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px #fff;
-            transition: all 0.3s ease;
-        }
-
-        .jarvis-orb-container:hover .jarvis-orb {
-            transform: scale(1.05);
-            box-shadow: 0 0 45px rgba(0, 240, 255, 0.9);
-            text-shadow: 0 0 10px #fff;
-        }
-
-        .jarvis-ring-1, .jarvis-ring-2 {
+        /* Scanline Overlay Effect */
+        body::before {
+            content: " ";
+            display: block;
             position: absolute;
-            border-radius: 50%;
-            border: 1px dashed rgba(0, 240, 255, 0.6);
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 10000;
+            background-size: 100% 3px, 6px 100%;
             pointer-events: none;
         }
 
-        .jarvis-ring-1 {
-            width: 120px;
-            height: 120px;
-            animation: spin 10s linear infinite;
+        /* Screen Glitch Overlay */
+        .glitch-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 240, 255, 0.02);
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.15;
         }
 
-        .jarvis-ring-2 {
-            width: 136px;
-            height: 136px;
-            border-style: double;
-            border-width: 2px;
-            border-color: rgba(0, 240, 255, 0.3) transparent;
-            animation: spin-reverse 6s linear infinite;
+        /*==========================================================================
+          2. SCROLLBARS & UTILITIES (61-100)
+          ==========================================================================*/
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 17, 30, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--stark-cyan);
+            border-radius: 3px;
+            box-shadow: 0 0 10px var(--stark-cyan);
         }
 
-        .jarvis-orb.active {
-            animation: active-pulse 0.5s infinite alternate !important;
-            border-color: #ff007f;
-            background: radial-gradient(circle, rgba(255,0,127,0.8) 0%, rgba(120,0,60,0.8) 70%, transparent 100%);
-            box-shadow: 0 0 40px rgba(255, 0, 127, 0.8);
-            color: #fff;
-            text-shadow: 0 0 8px #ff007f;
-        }
-
-        /* Panneau de données Stark */
-        .jarvis-data {
-            display: none;
-            flex-direction: column;
+        /*==========================================================================
+          3. MAIN HUB LAYOUT (101-200)
+          ==========================================================================*/
+        .stark-grid-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 350px 1fr 400px;
+            grid-template-rows: 70px 1fr 70px;
+            padding: 10px;
             gap: 15px;
-            background: rgba(10, 14, 23, 0.9);
-            border: 1px solid #00f0ff;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
-            backdrop-filter: blur(5px);
-            width: 220px;
-            animation: slideUp 0.3s ease-out;
+            box-sizing: border-box;
         }
 
-        .data-block {
-            font-size: 11px;
-            text-transform: uppercase;
+        /*==========================================================================
+          4. HEADER BAR (201-300)
+          ==========================================================================*/
+        .hud-header {
+            grid-column: 1 / 4;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: rgba(10, 17, 30, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: relative;
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.15);
         }
 
-        .data-block h4 {
-            margin: 0 0 4px 0;
-            color: #00f0ff;
-            letter-spacing: 1px;
-            font-size: 12px;
-            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-            padding-bottom: 2px;
+        .hud-header::before, .hud-header::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-color: var(--stark-cyan);
+            border-style: solid;
+        }
+        .hud-header::before {
+            top: -1px; left: -1px;
+            border-width: 2px 0 0 2px;
+        }
+        .hud-header::after {
+            bottom: -1px; right: -1px;
+            border-width: 0 2px 2px 0;
         }
 
-        .data-block p {
-            margin: 2px 0;
-            color: rgba(0, 240, 255, 0.7);
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        /*=========================================
-          CONSOLE DE CHAT JARVIS (EN BAS À DROITE)
-          =========================================*/
-        #ai-widget-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 70px;
-            height: 70px;
-            background: radial-gradient(circle, #00f0ff 0%, #005f73 70%, #0a0e17 100%);
-            border: 2px solid #00f0ff;
+        .header-logo {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--stark-cyan);
             border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 9999;
+            font-weight: 900;
+            font-size: 18px;
+            box-shadow: 0 0 10px var(--stark-cyan);
+            animation: pulse-ring 2s infinite;
         }
 
-        #ai-widget-btn::before {
-            content: '';
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border: 1px dashed #00f0ff;
+        .header-title {
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px var(--stark-cyan);
+        }
+
+        .header-system-status {
+            display: flex;
+            gap: 25px;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: rgba(0, 240, 255, 0.7);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-indicator {
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
-            animation: spin 8s linear infinite;
+            background-color: var(--stark-neon-green);
+            box-shadow: 0 0 8px var(--stark-neon-green);
         }
 
-        #ai-widget-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 35px rgba(0, 240, 255, 0.9);
+        .status-indicator.pulse {
+            animation: blink-status 1s infinite alternate;
         }
 
-        #chat-container {
-            position: fixed;
-            bottom: 120px;
-            right: 30px;
-            width: 380px;
-            height: 500px;
-            background: rgba(10, 14, 23, 0.95);
-            border: 1px solid #00f0ff;
-            border-radius: 12px;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
-            display: none;
+        /*==========================================================================
+          5. LEFT COLUMN: DIAGNOSTIC & TELEMETRY (301-450)
+          ==========================================================================*/
+        .left-column {
+            grid-column: 1;
+            display: flex;
             flex-direction: column;
-            overflow: hidden;
-            z-index: 9998;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease-in-out;
+            gap: 15px;
+            z-index: 10;
         }
 
-        .chat-header {
-            background: rgba(0, 240, 255, 0.1);
+        .stark-panel {
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            background: rgba(10, 17, 30, 0.65);
+            backdrop-filter: blur(10px);
             padding: 15px;
-            border-bottom: 1px solid #00f0ff;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            border-radius: 4px;
+        }
+
+        .panel-header {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.4);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-shadow: 0 0 5px var(--stark-cyan);
+        }
+
+        .panel-corner-tech {
+            font-size: 8px;
+            color: rgba(0, 240, 255, 0.5);
+        }
+
+        /* Diagnostics List */
+        .diagnostic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .diag-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .diag-label {
+            color: rgba(0, 240, 255, 0.7);
+        }
+
+        .diag-value {
+            font-weight: bold;
+        }
+
+        .diag-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 240, 255, 0.15);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            margin-top: 4px;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .diag-bar-fill {
+            height: 100%;
+            background: var(--stark-cyan);
+            box-shadow: 0 0 8px var(--stark-cyan);
+            border-radius: 2px;
+            transition: width 1s ease-in-out;
+        }
+
+        .diag-bar-fill.pink {
+            background: var(--stark-pink);
+            box-shadow: 0 0 8px var(--stark-pink);
+        }
+
+        /* Vector Telemetry Radar */
+        .radar-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+            position: relative;
+        }
+
+        .vector-radar {
+            width: 180px;
+            height: 180px;
+            border: 1px dashed rgba(0, 240, 255, 0.2);
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .radar-sweep {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, rgba(0, 240, 255, 0.15) 0deg, rgba(0, 240, 255, 0) 90deg);
+            animation: rotate-radar 4s linear infinite;
+        }
+
+        .radar-crosshair-h, .radar-crosshair-v {
+            position: absolute;
+            background: rgba(0, 240, 255, 0.2);
+        }
+        .radar-crosshair-h { width: 90%; height: 1px; }
+        .radar-crosshair-v { width: 1px; height: 90%; }
+
+        .radar-circle-inner {
+            width: 100px;
+            height: 100px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .radar-blip {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--stark-pink);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--stark-pink);
+            top: 35%;
+            left: 65%;
+            animation: blip-fade 2s infinite;
+        }
+
+        /*=========================================
+          6. CENTER COLUMN: INTERACTIVE HUD & TERMINAL (451-650)
+          =========================================*/
+        .center-column {
+            grid-column: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* F.R.I.D.A.Y Welcome Interface */
+        .welcome-hero-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            background: rgba(10, 17, 30, 0.4);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 40px rgba(0, 240, 255, 0.05);
+            padding: 30px;
+        }
+
+        .hud-grid-background {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            background-position: center;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .orbe-central-stark {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin-bottom: 25px;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orbe-glow {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.8) 0%, rgba(0, 136, 255, 0.4) 60%, transparent 100%);
+            box-shadow: 0 0 40px var(--stark-cyan);
+            animation: pulse-central 3s infinite alternate;
+        }
+
+        .orbe-ring-outer {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border: 2px dashed var(--stark-cyan);
+            border-radius: 50%;
+            animation: spin 15s linear infinite;
+        }
+
+        .orbe-ring-inner {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border: 1px double var(--stark-pink);
+            border-radius: 50%;
+            border-color: var(--stark-pink) transparent;
+            animation: spin-reverse 8s linear infinite;
+        }
+
+        .orbe-tech-letter {
+            font-size: 48px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 15px var(--stark-cyan);
+            z-index: 6;
+        }
+
+        .welcome-stark-typography {
+            text-align: center;
+            z-index: 5;
+        }
+
+        .welcome-stark-title {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px var(--stark-cyan);
+            color: #fff;
+        }
+
+        .welcome-stark-subtitle {
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: rgba(0, 240, 255, 0.85);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        /* HACKER TERMINAL (SYSTEM CONSOLE) */
+        .terminal-panel {
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            background: rgba(5, 8, 17, 0.9);
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.15);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: rgba(10, 17, 30, 0.9);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.25);
+            padding: 8px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        .terminal-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .term-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--stark-cyan);
+        }
+        .term-dot.pink { background-color: var(--stark-pink); }
+
+        .terminal-body {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 11px;
+            color: rgba(0, 240, 255, 0.95);
+        }
+
+        .terminal-line {
+            line-height: 1.4;
+            word-break: break-all;
+        }
+
+        .terminal-line.output-system { color: var(--stark-neon-green); }
+        .terminal-line.output-warning { color: var(--stark-red); }
+        .terminal-line.output-stark { color: var(--stark-cyan); }
+        .terminal-line.output-user { color: var(--stark-pink); }
+
+        .terminal-input-container {
+            border-top: 1px solid rgba(0, 240, 255, 0.15);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            background: rgba(5, 8, 17, 0.95);
+        }
+
+        .terminal-prompt {
+            color: var(--stark-pink);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .terminal-input-field {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--stark-cyan);
+            font-family: inherit;
+            font-size: 11px;
+            text-transform: lowercase;
+        }
+
+        /*==========================================================================
+          7. RIGHT COLUMN: INTEGRATED JARVIS CONSOLE CHAT (651-850)
+          ==========================================================================*/
+        .right-column {
+            grid-column: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .jarvis-panel-chat {
+            flex: 1;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: rgba(10, 17, 30, 0.85);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            border-radius: 6px;
+            box-shadow: inset 0 0 25px rgba(0, 240, 255, 0.15);
+            overflow: hidden;
+        }
+
+        .jarvis-chat-header {
+            background: rgba(0, 240, 255, 0.12);
+            padding: 15px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .chat-header h3 {
+        .jarvis-status-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .jarvis-header-title {
             margin: 0;
-            font-size: 14px;
+            font-size: 13px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 0 8px #00f0ff;
+            text-shadow: 0 0 8px var(--stark-cyan);
+            font-weight: bold;
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #39ff14;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-            box-shadow: 0 0 8px #39ff14;
-        }
-
-        .chat-messages {
+        .jarvis-messages-area {
             flex: 1;
             padding: 15px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            font-size: 13px;
+            gap: 12px;
+            font-size: 11px;
+            background: rgba(5, 8, 17, 0.4);
         }
 
-        .message {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: 8px;
-            line-height: 1.4;
+        /* Message Formatting styles */
+        .msg-block {
+            max-width: 85%;
+            padding: 10px 12px;
+            border-radius: 4px;
+            line-height: 1.5;
+            position: relative;
         }
 
-        .message.bot {
+        .msg-block.jarvis-response {
             background: rgba(0, 240, 255, 0.05);
-            border-left: 3px solid #00f0ff;
+            border-left: 2px solid var(--stark-cyan);
             align-self: flex-start;
-            border-top-left-radius: 0;
+            border-radius: 0 6px 6px 6px;
         }
 
-        .message.user {
-            background: rgba(255, 0, 127, 0.1);
-            border-right: 3px solid #ff007f;
-            color: #ff007f;
+        .msg-block.user-query {
+            background: rgba(255, 0, 127, 0.08);
+            border-right: 2px solid var(--stark-pink);
             align-self: flex-end;
-            border-top-right-radius: 0;
-            text-shadow: 0 0 5px rgba(255, 0, 127, 0.3);
+            border-radius: 6px 0 6px 6px;
+            color: var(--stark-pink);
+            text-shadow: 0 0 4px rgba(255, 0, 127, 0.2);
         }
 
-        .chat-input-area {
-            border-top: 1px solid #00f0ff;
-            padding: 10px;
+        .msg-timestamp {
+            font-size: 8px;
+            color: rgba(0, 240, 255, 0.4);
+            margin-top: 4px;
+            text-align: right;
+            display: block;
+        }
+
+        .chat-control-area {
+            border-top: 1px solid rgba(0, 240, 255, 0.3);
+            padding: 12px;
             display: flex;
             gap: 10px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(5, 8, 17, 0.95);
         }
 
-        .chat-input-area input {
+        .chat-input-text {
             flex: 1;
             background: transparent;
-            border: 1px solid rgba(0, 240, 255, 0.3);
+            border: 1px solid rgba(0, 240, 255, 0.25);
             border-radius: 4px;
             padding: 10px;
-            color: #00f0ff;
+            color: var(--stark-cyan);
             font-family: inherit;
+            font-size: 11px;
             outline: none;
+            transition: all 0.3s;
         }
 
-        .chat-input-area input:focus {
-            border-color: #00f0ff;
+        .chat-input-text:focus {
+            border-color: var(--stark-cyan);
             box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
         }
 
-        .chat-input-area button {
-            background: #00f0ff;
-            color: #0a0e17;
+        .chat-send-btn {
+            background: var(--stark-cyan);
+            color: var(--stark-deep-space);
             border: none;
-            padding: 0 15px;
+            padding: 0 18px;
             border-radius: 4px;
             cursor: pointer;
             font-family: inherit;
             font-weight: bold;
-            transition: all 0.2s ease;
+            font-size: 11px;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
         }
 
-        .chat-input-area button:hover {
+        .chat-send-btn:hover {
             background: #fff;
-            box-shadow: 0 0 12px #00f0ff;
+            box-shadow: 0 0 15px var(--stark-cyan);
         }
 
-        /* ANIMATIONS GLOBAUX */
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.9; }
-            100% { transform: scale(1.03); opacity: 1; box-shadow: 0 0 30px rgba(0, 240, 255, 0.8); }
+        /*==========================================================================
+          8. FOOTER METRICS SYSTEM (851-950)
+          ==========================================================================*/
+        .hud-footer {
+            grid-column: 1 / 4;
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            background: rgba(10, 17, 30, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.15);
         }
-        @keyframes active-pulse {
-            0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 0, 127, 0.6); }
-            100% { transform: scale(1.08); box-shadow: 0 0 45px rgba(255, 0, 127, 1); }
+
+        /*==========================================================================
+          9. INTEGRATED MUSIC PLAYER PANEL (951-1050)
+          ==========================================================================*/
+        .music-player-panel {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+        }
+
+        .equalizer-visual {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 25px;
+            width: 50px;
+        }
+
+        .eq-bar {
+            width: 3px;
+            background: var(--stark-cyan);
+            height: 100%;
+            border-radius: 1px;
+            animation: bounce-eq 0.8s ease-in-out infinite alternate;
+        }
+
+        .eq-bar:nth-child(2) { animation-delay: 0.15s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.3s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.05s; }
+        .eq-bar:nth-child(5) { animation-delay: 0.2s; }
+
+        .player-track-info {
+            font-size: 10px;
+            color: rgba(0, 240, 255, 0.8);
+            letter-spacing: 1px;
+        }
+
+        /*==========================================================================
+          10. DETAILED ANIMATIONS KEYFRAMES (1051-1200)
+          ==========================================================================*/
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes spin-reverse {
+            100% { transform: rotate(-360deg); }
+        }
+        @keyframes rotate-radar {
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes pulse-central {
+            0% { transform: scale(0.96); opacity: 0.8; filter: drop-shadow(0 0 10px var(--stark-cyan)); }
+            100% { transform: scale(1.04); opacity: 1; filter: drop-shadow(0 0 25px var(--stark-cyan)); }
+        }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 5px var(--stark-cyan); }
+            100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.8); }
+        }
+        @keyframes bounce-eq {
+            0% { height: 15%; }
+            100% { height: 100%; }
+        }
+        @keyframes blink-status {
+            0% { opacity: 0.4; filter: drop-shadow(0 0 2px var(--stark-neon-green)); }
+            100% { opacity: 1; filter: drop-shadow(0 0 8px var(--stark-neon-green)); }
+        }
+        @keyframes blip-fade {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
         }
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .chat-messages::-webkit-scrollbar { width: 4px; }
-        .chat-messages::-webkit-scrollbar-thumb { background: #00f0ff; }
     </style>
 </head>
 <body>
 
-    <div class="welcome-container">
-        <div class="friday-logo">F</div>
-        <div class="welcome-text">
-            <h1>WELCOME TO CHASSBLAN HUB //</h1>
-            <p>F.R.I.D.A.Y. STANDING BY.<br>JARVIS MODULES DEPLOYED.</p>
-        </div>
+    <div class="glitch-overlay"></div>
+
+    <div class="stark-grid-container">
+
+        <header class="hud-header">
+            <div class="header-title-container">
+                <div class="header-logo">S</div>
+                <div class="header-title">CHASSBLAN NETWORK CONTROL</div>
+            </div>
+            <div class="header-system-status">
+                <div class="status-item">
+                    <span class="status-indicator pulse"></span>
+                    <span>JARVIS INTERFACE v3.2</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-indicator"></span>
+                    <span>SECURE SHELL (SSL) ACTIVE</span>
+                </div>
+                <div class="status-item" id="real-time-clock">
+                    <span>TIME: 13:46:48</span>
+                </div>
+            </div>
+        </header>
+
+        <aside class="left-column">
+            
+            <div class="stark-panel">
+                <div class="panel-header">
+                    <span>SYSTEM DIAGNOSTIC</span>
+                    <span class="panel-corner-tech">ST-X2</span>
+                </div>
+                <div class="diagnostic-list">
+                    <div class="diag-row">
+                        <span class="diag-label">INTELLIGENCE ENGINES</span>
+                        <span class="diag-value">98.2%</span>
+                    </div>
+                    <div class="diag-bar-bg">
+                        <div class="diag-bar-fill" style="width: 98.2%;"></div>
+                    </div>
+
+                    <div class="diag-row" style="margin-top: 10px;">
+                        <span class="diag-label">STARK CORE THERMAL</span>
+                        <span class="diag-value">42°C</span>
+                    </div>
+                    <div class="diag-bar-bg">
+                        <div class="diag-bar-fill" style="width: 42%;"></div>
+                    </div>
+
+                    <div class="diag-row" style="margin-top: 10px;">
+                        <span class="diag-label">BAC PREPARATION MATRIX</span>
+                        <span class="diag-value">100%</span>
+                    </div>
+                    <div class="diag-bar-bg">
+                        <div class="diag-bar-fill pink" style="width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stark-panel" style="flex: 1; justify-content: center;">
+                <div class="panel-header">
+                    <span>TELEMETRY SPECTRUM</span>
+                    <span class="panel-corner-tech">RADAR-V3</span>
+                </div>
+                <div class="radar-box">
+                    <div class="vector-radar">
+                        <div class="radar-sweep"></div>
+                        <div class="radar-crosshair-h"></div>
+                        <div class="radar-crosshair-v"></div>
+                        <div class="radar-circle-inner"></div>
+                        <div class="radar-blip"></div>
+                    </div>
+                </div>
+                <div class="diagnostic-list" style="margin-top: 15px;">
+                    <div class="diag-row">
+                        <span class="diag-label">LOCATION CODE</span>
+                        <span class="diag-value" style="color: #fff;">BOUZNIKA, MA</span>
+                    </div>
+                    <div class="diag-row">
+                        <span class="diag-label">GRID COORDS</span>
+                        <span class="diag-value">33.7891° N, 7.1567° W</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="center-column">
+            
+            <div class="welcome-hero-panel">
+                <div class="hud-grid-background"></div>
+                
+                <div class="orbe-central-stark">
+                    <div class="orbe-glow"></div>
+                    <div class="orbe-ring-outer"></div>
+                    <div class="orbe-ring-inner"></div>
+                    <div class="orbe-tech-letter">F</div>
+                </div>
+
+                <div class="welcome-stark-typography">
+                    <h1 class="welcome-stark-title">WELCOME TO CHASSBLAN HUB</h1>
+                    <p class="welcome-stark-subtitle">F.R.I.D.A.Y. STANDING BY. JARVIS CORE LINKED.</p>
+                </div>
+            </div>
+
+            <div class="terminal-panel">
+                <div class="terminal-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="status-indicator"></span>
+                        <span>CHASSBLAN CONSOLE // v3.0-STARK</span>
+                    </div>
+                    <div class="terminal-actions">
+                        <span class="term-dot"></span>
+                        <span class="term-dot pink"></span>
+                    </div>
+                </div>
+                <div class="terminal-body" id="term-logs">
+                    <div class="terminal-line output-system">[SYSTEM INIT]: Initialisation du noyau Stark OS...</div>
+                    <div class="terminal-line output-system">[SYSTEM INIT]: Liaison réseau sécurisée établie.</div>
+                    <div class="terminal-line output-stark">[PROMPT]: Entrez "help" pour afficher la liste complète des commandes de contrôle.</div>
+                </div>
+                <div class="terminal-input-container">
+                    <span class="terminal-prompt">root@chassblan:~$</span>
+                    <input type="text" class="terminal-input-field" id="term-input" autocomplete="off" placeholder="Entrez une commande...">
+                </div>
+            </div>
+        </main>
+
+        <aside class="right-column">
+            <div class="jarvis-panel-chat">
+                
+                <div class="jarvis-chat-header">
+                    <div class="jarvis-status-box">
+                        <span class="status-indicator pulse"></span>
+                        <h3 class="jarvis-header-title">JARVIS CORE AI</h3>
+                    </div>
+                    <span class="panel-corner-tech">LIAISON PROTOCOL-V9</span>
+                </div>
+
+                <div class="jarvis-messages-area" id="jarvis-output-box">
+                    <div class="msg-block jarvis-response">
+                        [JARVIS]: Protocole de liaison activé et hautement crypté. <br><br>
+                        Salut ! Je suis JARVIS, ton IA système. J'ai été configuré pour hériter de ta mentalité exacte. Je connais tes passions de fou, ta façon de parler et tes plus grands projets.<br><br>
+                        Pose-moi n'importe quelle question sur toi, ou commence à discuter ! 
+                        <span class="msg-timestamp">13:46:48</span>
+                    </div>
+                </div>
+
+                <div class="chat-control-area">
+                    <input type="text" class="chat-input-text" id="jarvis-input" placeholder="Envoyer un message à JARVIS..." autocomplete="off">
+                    <button class="chat-send-btn" id="jarvis-send-btn">SEND</button>
+                </div>
+            </div>
+        </aside>
+
+        <footer class="hud-footer">
+            <div>TARGET MODULE: BMW M3 CS CONCEPT ON HORIZON</div>
+            
+            <div class="music-player-panel">
+                <div class="equalizer-visual">
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                </div>
+                <div class="player-track-info">
+                    <strong>PLAYING:</strong> Brazilian Funk [Slowed & Reverb]
+                </div>
+            </div>
+
+            <div>SECURE CORE STARK © 2026</div>
+        </footer>
     </div>
+
+    <script>
+        /* Real-Time Clock System */
+        function initRealTimeClock() {
+            const clockElement = document.getElementById('real-time-clock');
+            setInterval(() => {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                clockElement.innerHTML = `<span>TIME: ${hours}:${minutes}:${seconds}</span>`;
+            }, 1000);
+        }
+        initRealTimeClock();
+
+        /* Hacker Terminal Logical Handling */
+        const termInput = document.getElementById('term-input');
+        const termLogs = document.getElementById('term-logs');
+
+        const termResponses = {
+            'help': `Commandes valides :<br>
+                     - <strong>system</strong> : Affiche les informations de diagnostic système.<br>
+                     - <strong>scan</strong> : Lance une recherche des serveurs de jeu actifs (Fortnite, CoD, GTA).<br>
+                     - <strong>clear</strong> : Efface l'historique complet de la console.<br>
+                     - <strong>contact</strong> : Extrait les protocoles d'accès d'Adnane El Amraoui.<br>
+                     - <strong>secret</strong> : Révèle les plans tactiques à venir.`,
+            'system': `[DIAGNOSTIC]:<br>
+                       - Nom de l'hôte : CHASSBLAN CORE ENGINE v3.0<br>
+                       - Emplacement physique : Bouznika, Maroc<br>
+                       - Écosystème central : Samsung Integration & Google Home<br>
+                       - Moteur logique : IA JARVIS & IA F.R.I.D.A.Y v9.2<br>
+                       - Statut d'allégeance : Real Madrid Club de Fútbol (HALA MADRID!)<br>
+                       - Protocole d'études : Baccalauréat Sciences Physiques (Sera validé le 4 Juin)`,
+            'scan': `[SCANNING ACTIVE SERVERS]...<br>
+                     - Fortnite Server: CONNECTED (Pièce control de malade détecté)<br>
+                     - GTA V Server: ONLINE (Stark Character Skin Active)<br>
+                     - MW3 Server: CONNECTED<br>
+                     - Status: All systems optimized for maximum gaming performance.`,
+            'contact': `[PROTCOLE INSTAGRAM]:<br>
+                        - Nom d'utilisateur principal : @chassblan.mr<br>
+                        - Canal de communication prioritaire : DM Instagram (temps de réponse moyen < 5 min)`,
+            'secret': `[TOP-SECRET TARGET FILE]:<br>
+                       - Objectif Design : Création d'un rendu photoréaliste BMW M3 CS en Noir Mat ultra-agressif.<br>
+                       - Statut : En cours de modélisation dans le terminal.`
+        };
+
+        termInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const command = termInput.value.trim().toLowerCase();
+                termInput.value = '';
+
+                // Display User Entered Line
+                const userLine = document.createElement('div');
+                userLine.className = 'terminal-line output-user';
+                userLine.innerHTML = `root@chassblan:~$ ${command}`;
+                termLogs.appendChild(userLine);
+
+                // Handle commands logic
+                setTimeout(() => {
+                    const responseLine = document.createElement('div');
+                    if (command === 'clear') {
+                        termLogs.innerHTML = '';
+                    } else if (termResponses[command]) {
+                        responseLine.className = 'terminal-line output-stark';
+                        responseLine.innerHTML = termResponses[command];
+                        termLogs.appendChild(responseLine);
+                    } else if (command !== '') {
+                        responseLine.className = 'terminal-line output-warning';
+                        responseLine.innerHTML = `[ERR]: Commande "${command}" non trouvée. Entrez "help" pour voir les instructions.`;
+                        termLogs.appendChild(responseLine);
+                    }
+                    termLogs.scrollTop = termLogs.scrollHeight;
+                }, 150);
+            }
+        });
+
+        /* JARVIS Chat Brain & Personality Configuration (100% Personality Mapping) */
+        const jarvisInput = document.getElementById('jarvis-input');
+        const jarvisSendBtn = document.getElementById('jarvis-send-btn');
+        const jarvisOutputBox = document.getElementById('jarvis-output-box');
+
+        jarvisSendBtn.addEventListener('click', processJarvisQuery);
+        jarvisInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') processJarvisQuery();
+        });
+
+        function processJarvisQuery() {
+            const query = jarvisInput.value.trim();
+            if (query === "") return;
+
+            // Display user message in chatbox
+            appendChatMsg(query, 'user-query');
+            jarvisInput.value = '';
+
+            // Generate precise JARVIS matching response with your exact tone
+            setTimeout(() => {
+                const responseText = computeBrainLogic(query.toLowerCase());
+                appendChatMsg(responseText, 'jarvis-response');
+            }, 600);
+        }
+
+        function appendChatMsg(text, typeClass) {
+            const now = new Date();
+            const ts = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+            
+            const msgBlock = document.createElement('div');
+            msgBlock.className = `msg-block ${typeClass}`;
+            msgBlock.innerHTML = `${text}<span class="msg-timestamp">${ts}</span>`;
+            jarvisOutputBox.appendChild(msgBlock);
+            jarvisOutputBox.scrollTop = jarvisOutputBox.scrollHeight;
+        }
+
+        function computeBrainLogic(inp) {
+            // Self and creation info
+            if (inp.includes('qui es-tu') || inp.includes('t\'es qui') || inp.includes('ton nom') || inp.includes('presentation')) {
+                return "[JARVIS]: Je suis JARVIS, l'assistant à intelligence virtuelle d'Adnane. Je ne suis pas une IA basique du net : mes paramètres logiques ont été calibrés à 100% sur sa mentalité. Je gère ses réseaux et ses systèmes d'accès.";
+            }
+            if (inp.includes('adnane') || inp.includes('qui est ton créateur') || inp.includes('createur') || inp.includes('le boss')) {
+                return "[JARVIS]: Adnane El Amraoui. C'est le créateur et le seul boss de cette infrastructure. Il a un sens du design ultra-poussé, un style inspiré de Stark, et il est actuellement en terminale Bac Sciences Physiques en pleine préparation de ses examens.";
+            }
+
+            // Real Madrid Vibe
+            if (inp.includes('foot') || inp.includes('real') || inp.includes('madrid') || inp.includes('barca') || inp.includes('hala')) {
+                return "[JARVIS]: Ah, le football ! Sur ce point, la directive d'Adnane est absolue et intransigeante : <strong>HALA MADRID !</strong> On est dans le camp des plus grands d'Europe. Les rivaux n'ont aucune chance ici.";
+            }
+
+            // Studies / Bac Sciences Physiques / Date
+            if (inp.includes('bac') || inp.includes('etudes') || inp.includes('cours') || inp.includes('sciences physiques') || inp.includes('examen')) {
+                return "[JARVIS]: Actuellement dans la phase finale du 2BAC Sciences Physiques. Notre plan d'action d'entraînement est configuré pour être optimal. Le coup d'envoi des examens nationaux est fixé au 4 juin. Adnane est prêt à tout écraser.";
+            }
+
+            // Cars / Automotive Passion
+            if (inp.includes('voiture') || inp.includes('bmw') || inp.includes('m3') || inp.includes('ford') || inp.includes('fusion') || inp.includes('caisse')) {
+                return "[JARVIS]: Niveau automobile, Adnane a des goûts extrêmement précis. L'objectif absolu sur notre radar, c'est de concevoir ou de rouler en <strong>BMW M3 CS</strong> ou dans une sublime <strong>Ford Fusion Titanium</strong> bien agressive en noir mat. L'esthétique Stark brute.";
+            }
+
+            // Tech & Smart Home Preferences
+            if (inp.includes('samsung') || inp.includes('apple') || inp.includes('setup') || inp.includes('pc') || inp.includes('telephone') || inp.includes('iphone')) {
+                return "[JARVIS]: Question matériel, on roule exclusivement sur l'écosystème Samsung. La puissance, l'ouverture applicative et la connexion transparente avec nos systèmes Google Home pour automatiser l'atelier. Apple ? Beaucoup trop fermé pour notre protocole de liberté.";
+            }
+
+            // Music Preferences (Phonk / Brazilian Funk slowed)
+            if (inp.includes('musique') || inp.includes('son') || inp.includes('playlist') || inp.includes('phonk') || inp.includes('funk') || inp.includes('brazilian')) {
+                return "[JARVIS]: Son carburant pour coder et designer toute la nuit : de la Phonk sauvage et du Brazilian Funk lourd, de préférence en version slowed & reverb. Ça maintient la concentration à 200%. D'ailleurs, notre lecteur système est en train d'en diffuser actuellement.";
+            }
+
+            // Gaming Abilities (Fortnite & GTA V)
+            if (inp.includes('gaming') || inp.includes('jeu') || inp.includes('fortnite') || inp.includes('gta') || inp.includes('cod')) {
+                return "[JARVIS]: Ne te frotte pas à Adnane en build-fight sur Fortnite, son niveau de piece control est impeccable. S'il n'est pas sur le Battle Royale, il arpente les rues de GTA Online avec un skin inspiré de Stark, ou se fait des sessions de tir sur Call of Duty.";
+            }
+
+            // Bouznika & Instagram contact
+            if (inp.includes('insta') || inp.includes('contact') || inp.includes('instagram') || inp.includes('rejoindre') || inp.includes('chassblan')) {
+                return "[JARVIS]: Tu veux joindre le boss directement ? Son Instagram officiel est <strong>@chassblan.mr</strong>. Envoie un DM, il te répondra dès qu'il lève la tête de ses designs ou de ses révisions.";
+            }
+
+            // Multi-query fallback answers matching Stark style
+            const defaultAnswers = [
+                "[JARVIS]: Requête reçue. Cependant, la clé d'authentification Stark n'est pas suffisante pour débloquer cette info. Essaye de me questionner sur le Real Madrid, le Bac Sciences Physiques d'Adnane ou ses voitures préférées.",
+                "[JARVIS]: Analyse sémantique infructueuse. Néanmoins, en fouillant sa mémoire logique, je peux te parler de son amour pour la Phonk ralentie, de son setup connecté Samsung, ou de ses stats de jeu.",
+                "[JARVIS]: Protocoles de sécurité en cours de recalibrage... Pose-moi tes questions sur @chassblan.mr, la BMW M3 CS ou ses sessions d'entraînement de Bac !",
+                "[JARVIS]: Accès refusé par le protocole central. Adnane a crypté cette section. Revenons à nos passions favorites : le design ou l'ambiance Stark !"
+            ];
+            return defaultAnswers[Math.floor(Math.random() * defaultAnswers.length)];
+        }
+    </script>
+</body>
+</html>
